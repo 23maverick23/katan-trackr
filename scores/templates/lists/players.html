@@ -1,5 +1,4 @@
 {% extends "site/base.html" %}
-{% load gravatar %}
 
 {% block title %}
 {{ block.super }} | Players
@@ -24,9 +23,6 @@
             {% if player_list %}
             {% for player in player_list %}
             <div class="card">
-                <div class="image">
-                    <img src="{{ player.email|gravatar_url:300 }}">
-                </div>
                 <div class="content">
                     <div class="header">
                         <a href="{% url 'player-profile' player.pk %}" class="ui link">{{ player.get_short_name }}</a>

@@ -147,14 +147,12 @@
                             <br />This Year
                         </div>
                         <div class="text value">
-                            {% for player in most_wins_year %}
-                            {% if player.num_wins == most_wins_year_max.max %}
-                            {{ player.winning_scoresheet__player__first_name }}
-                            <div class="floating ui black label">{{ player.num_wins }}</div>
-                            {% endif %}
-                            {% empty %}
+                            {% if most_wins_year|length == 0 %}
                             N/A
-                            {% endfor %}
+                            {% else %}
+                            {{ most_wins_year.0.winning_scoresheet__player__first_name }}
+                            <div class="floating ui black label">{{ most_wins_year.0.num_wins }}</div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -398,13 +396,12 @@
                             <br />VP Card
                         </div>
                         <div class="text value">
-                            {% for player in most_vpcards %}
-                            {% if player.num_times == most_vpcards_max.max %}
-                            <i class="credit card icon"></i> {{ player.player__first_name }}
-                            {% endif %}
-                            {% empty %}
+                            {% if most_vpcards|length == 0 %}
                             N/A
-                            {% endfor %}
+                            {% else %}
+                            <i class="university icon"></i> {{ most_vpcards.0.player__first_name }}
+                            <div class="floating ui yellow label">{{ most_vpcards.0.num_times }}</div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -418,13 +415,12 @@
                             <br />Chits
                         </div>
                         <div class="text value">
-                            {% for player in most_chits %}
-                            {% if player.num_times == most_chits_max.max %}
-                            <i class="map marker alternate icon"></i> {{ player.player__first_name }}
-                            {% endif %}
-                            {% empty %}
+                            {% if most_chits|length == 0 %}
                             N/A
-                            {% endfor %}
+                            {% else %}
+                            <i class="university icon"></i> {{ most_chits.0.player__first_name }}
+                            <div class="floating ui yellow label">{{ most_chits.0.num_times }}</div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

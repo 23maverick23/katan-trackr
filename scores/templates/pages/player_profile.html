@@ -1,5 +1,4 @@
 {% extends "site/base.html" %}
-{% load gravatar %}
 {% load humanize %}
 {% load timing %}
 
@@ -18,7 +17,6 @@
     <div class="four wide column">
         <div class="ui one column center aligned grid">
             <div class="column">
-                <img class="ui centered medium circular image" src="{{ player.email|gravatar_url:300 }}">
                 <div class="ui huge center aligned header">
                     <div class="content">
                     {{ player.get_full_name }}
@@ -32,17 +30,7 @@
                     <div id="chart-last-five" style="width:100%; height:100px;"></div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="twelve wide column">
-        <h4 class="ui horizontal divider header">
-            <i class="quidditch icon"></i>
-            Game Statistics
-        </h4>
-
-        <div class="ui three column center aligned stackable grid">
-            
             <div class="column">
                 <div class="ui segment">
                     <div class="ui statistic">
@@ -123,9 +111,17 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="ui four column center aligned stackable grid segment">
+        </div>
+    </div>
+
+    <div class="twelve wide column">
+        <h4 class="ui horizontal divider header">
+            <i class="quidditch icon"></i>
+            Game Statistics
+        </h4>
+
+        <div class="ui one column center aligned stackable grid segment">
 
             <div class="sixteen wide column">
                 <div class="ui container">
@@ -134,6 +130,111 @@
             </div>
 
         </div>
+
+        <h4 class="ui horizontal divider header">
+            <i class="table icon"></i>
+            Player Scoresheets
+        </h4>
+
+        <div class="ui container">
+            {% if scoresheets %}
+            <table class="ui selectable celled padded sortable unstackable table">
+                <thead>
+                    <tr>
+                        <th class="single line">Game</th>
+                        <th class="single line">Color</th>
+                        <th class="right aligned">Total Points</th>
+                        <th class="right aligned mobile hidden">Settlements</th>
+                        <th class="right aligned mobile hidden">Citites</th>
+                        <th class="right aligned mobile hidden">VP Cards</th>
+                        <th class="right aligned mobile hidden">Chits</th>
+                        <th class="center aligned mobile hidden">Other</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for scoresheet in scoresheets %}
+                    <tr {% if scoresheet.player == scoresheet.game.winning_scoresheet.player %}class="positive"{% endif %}>
+                        <td>
+                            <h5 class="ui {% if scoresheet.player == scoresheet.game.winning_scoresheet.player %}green{% endif %} header">
+                                {% if scoresheet.player == scoresheet.game.winning_scoresheet.player %} <i class="trophy icon"></i>{% endif %}
+                                <div class="content">
+                                    ({{ scoresheet.game.get_formatted_number }}) {{ scoresheet.game.get_display_name }}
+                                </div>
+                                <div class="sub header">
+                                    <a href="{% url 'game-scoresheets' scoresheet.game.pk %}">Played for {{ scoresheet.game.get_duration|naturaldelta_duration }} ({{ scoresheet.game.date_start|naturaltime }})</a>
+                                </div>
+                                <div class="sub header">
+                                    {{ scoresheet.game.edition }}{% if scoresheet.start_position %} - Built {{ scoresheet.start_position|ordinal }}{% endif %}
+                                </div>
+                            </h5>
+                        </td>
+                        <td>
+                            <span class="ui {{ scoresheet.get_color_display|lower }} label">{{ scoresheet.get_color_display }}</span>
+                        </td>
+                        <td class="right aligned">
+                            {{ scoresheet.total_points }}
+                        </td>
+                        <td class="right aligned mobile hidden">
+                            {{ scoresheet.num_settlements }}
+                        </td>
+                        <td class="right aligned mobile hidden">
+                            {{ scoresheet.num_cities }}
+                        </td>
+                        <td class="right aligned mobile hidden">
+                            {{ scoresheet.num_vpcards }}
+                        </td>
+                        <td class="right aligned mobile hidden">
+                            {{ scoresheet.num_chits }}
+                        </td>
+                        <td class="center aligned mobile hidden">
+                            {% if scoresheet.longest_road %}<span data-inverted="" data-tooltip="Longest Road"><i class="road icon"></i></span>{% endif %}
+                            {% if scoresheet.largest_army %}<span data-inverted="" data-tooltip="Largest Army"><i class="users icon"></i></span>{% endif %}
+                            {% if scoresheet.metro_science %}<span data-inverted="" data-tooltip="Science Metropolis"><span class="ui green empty circular label"></span></span>{% endif %}
+                            {% if scoresheet.metro_politics %}<span data-inverted="" data-tooltip="Politics Metropolis"><span class="ui blue empty circular label"></span></span>{% endif %}
+                            {% if scoresheet.metro_trade %}<span data-inverted="" data-tooltip="Trade Metropolis"><span class="ui yellow empty circular label"></span></span>{% endif %}
+                            {% if scoresheet.merchant %}<span data-inverted="" data-tooltip="Merchant"><span class="ui purple empty circular label"></span></span>{% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="8">
+                            <div class="ui extra pagination menu">
+                                <a class="icon item disabled">Showing {{ scoresheets.start_index }} to {{ scoresheets.end_index }} of {{ scoresheets.paginator.count }} game{{ scoresheets.paginator.count|pluralize }}</a>
+                            </div>
+                            <div class="ui right floated pagination menu">
+                                {% if scoresheets.has_previous %}
+                                <a href="?page={{ scoresheets.previous_page_number }}" class="icon item">
+                                    <i class="left chevron icon"></i>
+                                </a>
+                                {% else %}
+                                <a class="icon item disabled">
+                                    <i class="left chevron icon"></i>
+                                </a>
+                                {% endif %}
+
+                                {% for page in scoresheets.paginator.page_range %}
+                                <a href="?page={{ page }}" class="item {% if page_num == page %}active{% endif %}">{{ page }}</a>
+                                {% endfor %}
+
+                                {% if scoresheets.has_next %}
+                                <a href="?page={{ scoresheets.next_page_number }}" class="icon item">
+                                    <i class="right chevron icon"></i>
+                                </a>
+                                {% else %}
+                                <a class="icon item disabled">
+                                    <i class="right chevron icon"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+            {% endif %}
+        </div>
+
     </div>
 </div>
 {% endblock %}
@@ -144,6 +245,9 @@
     $(function() {
         $(document)
             .ready(function() {
+
+                $('table.sortable').tablesort();
+
                 var lastFiveChart = Highcharts.chart('chart-last-five', {
                     chart: {
                         type: 'column'

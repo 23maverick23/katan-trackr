@@ -50,26 +50,26 @@ def statistics_page(request):
 
     most_wins_year = games_played.filter(date_start__year=today.year) \
                                  .values('winning_scoresheet__player__first_name') \
-                                 .order_by('winning_scoresheet__player__first_name') \
-                                 .annotate(num_wins=Count('pk'))
-    most_wins_year_max = most_wins_year.aggregate(max=Max('num_wins'))
+                                 .annotate(num_wins=Count('pk')) \
+                                 .order_by('-num_wins')
 
     most_wins_last_year = games_played.filter(date_start__year=today_last_year.year) \
                                       .values('winning_scoresheet__player__first_name') \
-                                      .order_by('winning_scoresheet__player__first_name') \
-                                      .annotate(num_wins=Count('pk'))
-    most_wins_last_year_max = most_wins_year.aggregate(max=Max('num_wins'))
+                                      .annotate(num_wins=Count('pk')) \
+                                      .order_by('-num_wins')
 
     scoresheets = Scoresheet.objects.filter(is_active=True)
 
     scoresheets_most_settlements = scoresheets.filter(game__date_start__year=today.year) \
                                               .values('player__first_name') \
-                                              .order_by('player__first_name') \
-                                              .annotate(num_times=Sum('num_settlements'))
+                                              .annotate(num_times=Sum('num_settlements')) \
+                                              .order_by('-num_times') \
+
     scoresheets_most_cities = scoresheets.filter(game__date_start__year=today.year) \
                                          .values('player__first_name') \
-                                         .order_by('player__first_name') \
-                                         .annotate(num_times=Sum('num_cities'))
+                                         .annotate(num_times=Sum('num_cities')) \
+                                         .order_by('-num_times')
+
     scoresheets_most_metropolises = scoresheets.filter(
                                                 Q(game__date_start__year=today.year) & \
                                                 Q(metro_science=True) | \
@@ -77,8 +77,8 @@ def statistics_page(request):
                                                 Q(metro_trade=True) \
                                                 ) \
                                                .values('player__first_name') \
-                                               .order_by('player__first_name') \
-                                               .annotate(num_times=Count('pk'))
+                                               .annotate(num_times=Count('pk')) \
+                                               .order_by('-num_times')
 
     scoresheets_points = scoresheets.aggregate(
                                                max=Max('total_points'),
@@ -88,43 +88,41 @@ def statistics_page(request):
 
     scoresheets_longest_road = scoresheets.filter(longest_road=True) \
                                           .values('player__first_name') \
-                                          .order_by('player__first_name') \
-                                          .annotate(num_times=Count('pk'))
+                                          .annotate(num_times=Count('pk')) \
+                                          .order_by('-num_times')
 
     scoresheets_largest_army = scoresheets.filter(largest_army=True) \
                                           .values('player__first_name') \
-                                          .order_by('player__first_name') \
-                                          .annotate(num_times=Count('pk'))
+                                          .annotate(num_times=Count('pk')) \
+                                          .order_by('-num_times')
 
     scoresheets_merchant = scoresheets.filter(merchant=True) \
                                       .values('player__first_name') \
-                                      .order_by('player__first_name') \
-                                      .annotate(num_times=Count('pk'))
+                                      .annotate(num_times=Count('pk')) \
+                                      .order_by('-num_times')
 
     scoresheets_science = scoresheets.filter(metro_science=True) \
                                       .values('player__first_name') \
-                                      .order_by('player__first_name') \
-                                      .annotate(num_times=Count('pk'))
+                                      .annotate(num_times=Count('pk')) \
+                                      .order_by('-num_times')
 
     scoresheets_politics = scoresheets.filter(metro_politics=True) \
                                       .values('player__first_name') \
-                                      .order_by('player__first_name') \
-                                      .annotate(num_times=Count('pk'))
+                                      .annotate(num_times=Count('pk')) \
+                                      .order_by('-num_times')
 
     scoresheets_trade = scoresheets.filter(metro_trade=True) \
                                       .values('player__first_name') \
-                                      .order_by('player__first_name') \
-                                      .annotate(num_times=Count('pk'))
+                                      .annotate(num_times=Count('pk')) \
+                                      .order_by('-num_times')
 
     most_vpcards = scoresheets.values('player__first_name') \
-                              .order_by('player__first_name') \
-                              .annotate(num_times=Sum('num_vpcards'))
-    most_vpcards_max = most_vpcards.aggregate(max=Max('num_times'))
+                              .annotate(num_times=Sum('num_vpcards')) \
+                              .order_by('-num_times')
 
     most_chits = scoresheets.values('player__first_name') \
-                            .order_by('player__first_name') \
-                            .annotate(num_times=Sum('num_chits'))
-    most_chits_max = most_chits.aggregate(max=Max('num_times'))
+                            .annotate(num_times=Sum('num_chits')) \
+                            .order_by('-num_times')
 
     template = 'pages/statistics.html'
     context = {
@@ -136,9 +134,7 @@ def statistics_page(request):
         "last_win": last_win,
         "current_win_streak": current_win_streak,
         "most_wins_year": most_wins_year,
-        "most_wins_year_max": most_wins_year_max,
         "most_wins_last_year": most_wins_last_year,
-        "most_wins_last_year_max": most_wins_last_year_max,
 
         "scoresheets_most_settlements": scoresheets_most_settlements,
         "scoresheets_most_cities": scoresheets_most_cities,
@@ -153,9 +149,7 @@ def statistics_page(request):
         "scoresheets_trade": scoresheets_trade,
 
         "most_vpcards": most_vpcards,
-        "most_vpcards_max": most_vpcards_max,
         "most_chits": most_chits,
-        "most_chits_max": most_chits_max,
 
         "statistics_active": "active"
     }
@@ -205,7 +199,10 @@ def player_list(request):
 def player_profile_page(request, player):
     player = get_object_or_404(Player, pk=player)
 
-    scoresheets = Scoresheet.objects.filter(is_active=True).filter(player=player.pk)
+    scoresheets = Scoresheet.objects.filter(is_active=True) \
+                                    .filter(player=player.pk) \
+                                    .order_by('-game__date_start')
+
     statistics = scoresheets.aggregate(
         highest_score=Max('total_points'),
         lowest_score=Min('total_points'),
@@ -213,7 +210,7 @@ def player_profile_page(request, player):
         lifetime_points=Sum('total_points'),
     )
 
-    last_five = scoresheets.order_by('-game__date_start')[:10]
+    last_five = scoresheets[:10]
 
     class Round(Func):
         function = "ROUND"
@@ -249,9 +246,15 @@ def player_profile_page(request, player):
     most_common_color = color_names[games_by_color[0]['color']]
     most_winning_color = color_names[wins_by_color[0]['winning_scoresheet__color']]
 
+    paginator = Paginator(scoresheets, 5)
+    page = request.GET.get('page')
+    player_scoresheets = paginator.get_page(page)
+
     template = 'pages/player_profile.html'
     context = {
         "player": player,
+        "scoresheets": player_scoresheets,
+        "page_num": player_scoresheets.number,
         "last_five": last_five,
         "statistics": statistics,
         "edition_list": edition_list,

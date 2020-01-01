@@ -33,8 +33,11 @@
             {% for scoresheet in scoresheets %}
             <tr {% if scoresheet.player == scoresheet.game.winning_scoresheet.player %}class="positive"{% endif %}>
                 <td>
-                    <h5 class="ui header">
-                        ({{ scoresheet.game.get_formatted_number }}) {{ scoresheet.game.get_display_name }}
+                    <h5 class="ui {% if scoresheet.player == scoresheet.game.winning_scoresheet.player %}green{% endif %} header">
+                        {% if scoresheet.player == scoresheet.game.winning_scoresheet.player %} <i class="trophy icon"></i>{% endif %}
+                        <div class="content">
+                            ({{ scoresheet.game.get_formatted_number }}) {{ scoresheet.game.get_display_name }}
+                        </div>
                         <div class="sub header">
                             <a href="{% url 'game-scoresheets' scoresheet.game.pk %}">Played for {{ scoresheet.game.get_duration|naturaldelta_duration }} ({{ scoresheet.game.date_start|naturaltime }})</a>
                         </div>
