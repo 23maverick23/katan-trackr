@@ -1,0 +1,1 @@
+web: gunicorn katan_trackr.wsgi
