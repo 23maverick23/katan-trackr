@@ -253,7 +253,7 @@
                         type: 'column'
                     },
                     title: {
-                        text: 'Last {{ last_five|length }} Games'
+                        text: 'Last {% if last_five|length > 1 %}{{ last_five|length }} {% endif %}Game{{ last_five|pluralize }}'
                     },
                     xAxis: {
                         lineWidth: 0,

@@ -236,6 +236,7 @@ def player_profile_page(request, player):
     games_by_color = scoresheets.values('color') \
                                    .annotate(mc=Count('color')) \
                                    .order_by('-mc')
+
     wins_by_color = Game.objects.filter(is_active=True) \
                                 .filter(winning_scoresheet__player=player.pk) \
                                 .values('winning_scoresheet__color') \
@@ -244,7 +245,11 @@ def player_profile_page(request, player):
 
     color_names = dict(Scoresheet.PLAYER_COLORS)
     most_common_color = color_names[games_by_color[0]['color']]
-    most_winning_color = color_names[wins_by_color[0]['winning_scoresheet__color']]
+
+    if not wins_by_color:
+        most_winning_color = "N/A"
+    else:
+        most_winning_color = color_names[wins_by_color[0]['winning_scoresheet__color']]
 
     paginator = Paginator(scoresheets, 5)
     page = request.GET.get('page')
