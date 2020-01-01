@@ -70,7 +70,7 @@ class PlayerAdmin(BaseUserAdmin):
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
     list_display = ('first_name', 'last_name', 'email', 'is_active')
-    list_display_links = ('first_name', 'last_name')
+    list_display_links = ('first_name', 'last_name', 'email')
     list_filter = ('is_active', )
     fieldsets = (
         (None, {'fields': (('first_name', 'last_name'), ('email', 'password'), )}),
