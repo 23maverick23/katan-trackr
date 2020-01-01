@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<!-- START HEAD -->
+	<head>
+	{% include "site/head.html" %}
+	<!-- Site Properties -->
+	<title>{% block title %}Katan Trackr{% endblock %}</title>
+
+	{% block extra_style %}{% endblock %}
+	</head>
+	<!-- END HEAD -->
+
+	<body>
+
+		<!-- START NAVMENU -->
+		{% include "site/navmenu.html" %}
+		<!-- END NAVMENU -->
+
+		<!-- START PUSHER -->
+		<div class="pusher">
+
+			<!-- START MAIN CONTENT -->
+			{% block content %}
+			<div class="ui container">
+			    <div class="ui large top fixed secondary mobile menu">
+			        <a class="toc item">
+			            <i class="sidebar icon"></i>
+			        </a>
+			        <div class="header item">
+			            {% block mobile_title %}Katan Trackr{% endblock %}
+			        </div>
+			        <div class="right menu">
+			            <a href="{% url 'home' %}" class="item">
+			                <img src="{% static 'scores/images/logo.png' %}">
+			            </a>
+			        </div>
+			    </div>
+			</div>
+			{% endblock %}
+			<!-- END MAIN CONTENT -->
+
+			<!-- START FOOTER -->
+			{% include "site/footer.html" %}
+			<!-- END FOOTER -->
+
+			<!-- START SCRIPTS -->
+			{% include "site/scripts.html" %}
+			{% block extra_scripts %}{% endblock %}
+			<!-- END SCRIPTS -->
+
+		<!-- END PUSHER -->
+		</div>
+
+	</body>
+
+</html>

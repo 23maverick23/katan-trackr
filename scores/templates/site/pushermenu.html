@@ -1,0 +1,25 @@
+{% load static %}
+
+<!-- Pusher menu -->
+<div class="ui container">
+    <div class="ui large secondary inverted pointing menu">
+        <a class="toc item">
+            <i class="sidebar icon"></i>
+        </a>
+        <a href="{% url 'home' %}" class="header item {{ home_active }}">Home</a>
+        <a href="{% url 'statistics' %}" class="item {{ statistics_active }}">Statistics</a>
+        <a href="{% url 'games' %}" class="item {{ games_active }}">Games</a>
+        <a href="{% url 'scoresheets' %}" class="item {{ scoresheets_active }}">Scoresheets</a>
+        <a href="{% url 'players' %}" class="item {{ players_active }}">Players</a>
+        <a href="{% url 'editions' %}" class="item {{ editions_active }}">Editions</a>
+        <a href="{% url 'locations' %}" class="item {{ locations_active }}">Locations</a>
+        <div class="right item">
+            {% if user.is_authenticated %}
+            <a href="{% url 'admin:index' %}" target="_blank" class="ui inverted button">Admin</a>
+            <a href="{% url 'admin:logout' %}" target="_blank" class="ui inverted button">Log out</a>
+            {% else %}
+            <a href="{% url 'admin:index' %}" target="_blank" class="ui inverted button">Log in</a>
+            {% endif %}
+        </div>
+    </div>
+</div>

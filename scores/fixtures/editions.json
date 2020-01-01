@@ -1,0 +1,58 @@
+[
+	{
+        "fields": {
+            "is_active": true,
+            "created": "2019-01-01T01:01:01.606Z",
+            "modified": "2019-01-01T01:01:01.606Z",
+            "name": "Original",
+            "description": "Picture yourself in the era of discoveries: after a long voyage of great deprivation, your ships have finally reached the coast of an uncharted island. Its name shall be CATAN! But you are not the only discoverer. Other fearless seafarers have also landed on the shores of CATAN: the race to settle the island has begun!",
+            "max_players": "56",
+            "duration": "45–90 min.",
+            "points": 10
+        },
+        "model": "scores.edition",
+        "pk": "3223760c-4c35-42c6-aa54-3cfcc9ae3b0f"
+    },
+    {
+        "fields": {
+            "is_active": true,
+            "created": "2019-01-01T01:01:01.606Z",
+            "modified": "2019-01-01T01:01:01.606Z",
+            "name": "Seafarers",
+            "description": "Build ships, set sail, and conquer the magnificent island world of CATAN. Nine voyages of discovery are awaiting the settlers. Requires the CATAN base game to play.",
+            "max_players": "34",
+            "duration": "60–120 min.",
+            "points": 13
+        },
+        "model": "scores.edition",
+        "pk": "6d57c22b-511e-4413-b199-c6f83e788622"
+    },
+    {
+        "fields": {
+            "is_active": true,
+            "created": "2019-01-01T01:01:01.606Z",
+            "modified": "2019-01-01T01:01:01.606Z",
+            "name": "Cities & Knights",
+            "description": "Flourishing trade brings prosperity to Catan. However, all this wealth also attracts barbarians. The knights of CATAN are needed! Requires the CATAN base game to play.",
+            "max_players": "34",
+            "duration": "90–120 min.",
+            "points": 13
+        },
+        "model": "scores.edition",
+        "pk": "73259d49-f11e-4799-b2dd-09bb93036d28"
+    },
+    {
+        "fields": {
+            "is_active": true,
+            "created": "2019-01-01T01:01:01.606Z",
+            "modified": "2019-01-01T01:01:01.606Z",
+            "name": "Seafarers + Cities & Knights",
+            "description": "You can use the possibilities of the Seafarers expansion together with Cities & Knights. When playing with the Seafarers expansion, you must ensure that certain actions that apply to roads are also possible for ships.",
+            "max_players": "34",
+            "duration": "90–120 min.",
+            "points": 15
+        },
+        "model": "scores.edition",
+        "pk": "092d4eb3-6909-4f1d-bfd6-7dbdd95e66be"
+    }
+]

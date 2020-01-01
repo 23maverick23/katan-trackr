@@ -1,0 +1,163 @@
+{% extends "site/base.html" %}
+{% load gravatar %}
+{% load humanize %}
+
+{% block title %}
+{{ block.super }} | {{ player.get_full_name }}
+{% endblock %}
+
+{% block content %}
+<div class="ui xtrapadded container">
+
+    <img class="ui centered medium circular image" src="{{ player.email|gravatar_url:300 }}">
+    <div class="ui huge center aligned header">
+        <div class="content">
+        {{ player.get_full_name }}
+        <div class="sub header">Last played {{ player.last_played|naturaltime}}</div>
+        </div>
+    </div>
+
+    <h4 class="ui horizontal divider header">
+        <i class="quidditch icon"></i>
+        Game Statistics
+    </h4>
+
+    <div class="ui stackable four column center aligned grid segment">
+        <div class="row">
+            <div class="column">
+                <div class="ui statistic">
+                    <div class="value">
+                    {{ player.num_games_played }}
+                    </div>
+                    <div class="label">
+                    Games Played
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui statistic">
+                    <div class="value">
+                    {{ player.num_games_won }}
+                    </div>
+                    <div class="label">
+                    Games Won
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui statistic">
+                    <div class="value">
+                    {{ player.num_games_lost }}
+                    </div>
+                    <div class="label">
+                    Games Lost
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui statistic">
+                    <div class="value">
+                    {{ player.win_loss_per }}
+                    </div>
+                    <div class="label">
+                    Win Percentage
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="four column row">
+            <div class="sixteen wide column">
+                <div id="first-chart" style="width:100%; height:400px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="ui horizontal divider header">
+        <i class="bar chart icon"></i>
+        Scoring Statistics
+    </h4>
+
+    <div class="ui stackable four column center aligned grid segment">
+        <div class="row">
+            <div class="column">
+                <div class="ui statistic">
+                    <div class="value">
+                    {{ statistics.lifetime_points }}
+                    </div>
+                    <div class="label">
+                    Lifetime Points
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui statistic">
+                    <div class="value">
+                    {{ statistics.highest_score }}
+                    </div>
+                    <div class="label">
+                    Highest Score
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui statistic">
+                    <div class="value">
+                    {{ statistics.lowest_score }}
+                    </div>
+                    <div class="label">
+                    Lowest Score
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui statistic">
+                    <div class="value">
+                    {{ statistics.average_score|floatformat:"0" }}
+                    </div>
+                    <div class="label">
+                    Average Score
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $(document)
+            .ready(function() {
+                var myChart = Highcharts.chart('first-chart', {
+                    chart: {
+                        type: 'bar'
+                    },
+                    title: {
+                        text: 'Fruit Consumption'
+                    },
+                    xAxis: {
+                        categories: ['Apples', 'Bananas', 'Oranges']
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Fruit eaten'
+                        }
+                    },
+                    series: [{
+                        name: 'Jane',
+                        data: [1, 0, 4]
+                    }, {
+                        name: 'John',
+                        data: [5, 7, 3]
+                    }]
+                });
+            })
+        ;
+    });
+</script>
+{% endblock %}

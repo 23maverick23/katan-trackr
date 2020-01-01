@@ -1,0 +1,111 @@
+{% extends "site/base.html" %}
+{% load humanize %}
+{% load timing %}
+
+{% block title %}
+{{ block.super }} | Games
+{% endblock %}
+
+{% block mobile_title %}
+{{ block.super }} | Games
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+<div class="ui xtrapadded container">
+    {% if games %}
+    <table class="ui selectable celled padded sortable striped table">
+        <thead>
+            <tr>
+                <th class="single line">Game</th>
+                <th>Edition</th>
+                <th>Location</th>
+                <th>Winner</th>
+                <th class="single line">Scoresheets</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for game in games %}
+            <tr>
+                <td class="single line">
+                    <h5 class="ui header">
+                        ({{ game.get_formatted_number }}) {{ game.get_display_name }}
+                        <div class="sub header">Played for {{ game.get_duration|naturaldelta_duration }} ({{ game.date_start|naturaltime }})</div>
+                    </h5>
+                </td>
+                <td>
+                    <h5 class="ui header">
+                        {{ game.edition }}
+                        <div class="sub header">{{ game.edition.short_description }}</div>
+                    </h5>
+                </td>
+                <td>
+                    {{ game.location }}
+                </td>
+                <td>
+                    {% if game.winning_scoresheet.player %}
+                    <h5 class="ui header">
+                        <a href="{% url 'player-profile' game.winning_scoresheet.player.pk %}">{{ game.winning_scoresheet.player }}</a>
+                        <div class="sub header">{{ game.winning_scoresheet.total_points }} VPs</div>
+                    </h5>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if game.get_scoresheets_count %}
+                    <a href="{% url 'game-scoresheets' game.pk %}">{{ game.get_scoresheets_count }} scoresheet{{ game.get_scoresheets_count|pluralize }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="6">
+                    <div class="ui extra pagination menu">
+                        <a class="icon item disabled">Showing {{ games.start_index }} to {{ games.end_index }} of {{ games.paginator.count }} game{{ games.paginator.count|pluralize }}</a>
+                    </div>
+                    <div class="ui right floated pagination menu">
+                        {% if games.has_previous %}
+                        <a href="?page={{ games.previous_page_number }}" class="icon item">
+                            <i class="left chevron icon"></i>
+                        </a>
+                        {% else %}
+                        <a class="icon item disabled">
+                            <i class="left chevron icon"></i>
+                        </a>
+                        {% endif %}
+
+                        {% for page in games.paginator.page_range %}
+                        <a href="?page={{ page }}" class="item {% if page_num == page %}active{% endif %}">{{ page }}</a>
+                        {% endfor %}
+
+                        {% if games.has_next %}
+                        <a href="?page={{ games.next_page_number }}" class="icon item">
+                            <i class="right chevron icon"></i>
+                        </a>
+                        {% else %}
+                        <a class="icon item disabled">
+                            <i class="right chevron icon"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script type="text/javascript">
+    $(function() {
+        $(document)
+            .ready(function() {
+                $('table.sortable').tablesort();
+            })
+        ;
+    });
+</script>
+{% endblock %}

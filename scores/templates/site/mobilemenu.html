@@ -1,0 +1,17 @@
+{% load static %}
+
+<div class="ui container">
+    <div class="ui large top fixed secondary mobile menu">
+        <a class="toc item">
+            <i class="sidebar icon"></i>
+        </a>
+        <div class="header item">
+            {% block mobile_title %}Katan Trackr{% endblock %}
+        </div>
+        <div class="right menu">
+            <a href="{% url 'home' %}" class="item">
+                <img src="{% static 'scores/images/logo.png' %}">
+            </a>
+        </div>
+    </div>
+</div>

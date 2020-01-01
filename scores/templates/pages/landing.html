@@ -1,0 +1,59 @@
+{% extends "site/base.html" %}
+{% load static from staticfiles %}
+
+{% block content %}
+<div class="ui inverted vertical masthead center aligned segment">
+
+    {% include "site/pushermenu.html" %}
+
+    <div class="ui text container">
+        <h1 class="ui inverted header">
+            KATAN TRACKR
+        </h1>
+        <h2>LET'S SETTLE THIS</h2>
+        <a href="{% url 'statistics' %}" class="ui huge primary button">Start Analyzing <i class="right arrow icon"></i></a>
+    </div>
+
+</div>
+
+<div class="ui vertical stripe segment">
+    <div class="ui middle aligned stackable grid container">
+        <div class="row">
+            <div class="eight wide column">
+                <h3 class="ui header">Want to Lose Good Friends Fast?</h3>
+                <p>We track more data about your wins and loses than you ever thought was possible. Let us support your braggart lifestyle and empower your need to explain all the cool and obvious planning that went into your victory...through pure data analytics.</p>
+                <h3 class="ui header">Do You Like Contentious Car Rides Home?</h3>
+                <p>Yes that's right, you thought it was the stuff of dreams, but even spouses can't hide from our predictive analytics and brutally honest game statistics. It's okay honey - you were never going to win playing Seafarers Edition with the green color pieces.</p>
+            </div>
+            <div class="six wide right floated column">
+                <img src="{% static 'scores/images/logo_large.png' %}" class="ui large rounded image">
+            </div>
+        </div>
+        <div class="row">
+            <div class="center aligned column">
+                <a href="{% url 'statistics' %}" class="ui huge button">Free Product Tour</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui vertical stripe quote segment">
+    <div class="ui equal width stackable internally celled grid">
+        <div class="center aligned row">
+            <div class="column">
+                <h3>"We built this city on wheat and ore."</h3>
+            </div>
+            <div class="column">
+                <h3>"Who has wood for my sheep?"</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui vertical stripe segment">
+    <div class="ui text container">
+        <h3 class="ui header">Breaking The Grid, Grabs Your Attention</h3>
+        <p>Instead of focusing on content creation and hard work, we have learned how to master the art of doing nothing by providing massive amounts of text and icons that can seem massive, monolithic and worth your attention.</p>
+    </div>
+</div>
+{% endblock %}

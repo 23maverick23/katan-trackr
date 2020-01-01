@@ -1,0 +1,105 @@
+{% extends "site/base.html" %}
+{% load static from staticfiles %}
+{% load timing %}
+
+{% block title %}
+{{ block.super }} | Locations
+{% endblock %}
+
+{% block mobile_title %}
+{{ block.super }} | Locations
+{% endblock %}
+
+{% block extra_style %}
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' rel='stylesheet'/>
+<style type="text/css">
+    #map {
+        display: inline-block;
+        width: 100%;
+        min-height: 400px;
+        height: 600px;
+    }
+    .marker {
+        background-image: url({% static 'scores/images/sheep.png' %});
+        background-size: cover;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    .mapboxgl-popup {
+        max-width: 200px;
+    }
+
+    .mapboxgl-popup-content {
+        text-align: center;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+<div class="ui xtrapadded stackable relaxed grid container">
+    <div class="row">
+        <div class="sixteen wide column">
+            <div id="map"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+
+mapboxgl.accessToken = '{{ MAPBOX_KEY }}';
+
+var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/rymoio/ck4tb3vro60ao1cmsrfsznuqj',
+    center: [-104.9903, 39.7392],
+    zoom: 12
+});
+
+{% if location_list %}
+var geojson = {type: 'FeatureCollection', features:[]};
+var bounds = [];
+
+{% for location in location_list %}
+var loc = {
+    type: 'Feature',
+    geometry: {
+        type: 'Point',
+        coordinates: [{{ location.longitude }}, {{ location.latitude }}]
+    },
+    properties: {
+        title: '{{ location.name }}',
+        description: 'You have played at this location <strong>{{ location.games_played }} time{{ location.games_played|pluralize }}</strong> for a total of <strong>{{ location.duration_played.sum|naturaldelta_duration }}</strong>.'
+    }
+};
+geojson.features.push(loc);
+bounds.push([{{ location.longitude }}, {{ location.latitude }}]);
+{% endfor %}
+
+geojson.features.forEach(function(marker) {
+
+    // create a HTML element for each feature
+    var el = document.createElement('div');
+    el.className = 'marker';
+
+    // make a marker for each feature and add to the map
+    new mapboxgl.Marker(el)
+        .setLngLat(marker.geometry.coordinates)
+        .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+        .setHTML('<h3 class="ui header">' + marker.properties.title + '<div class="sub header">' + marker.properties.description + '</div></h3>'))
+        .addTo(map);
+});
+{% endif %}
+
+map.fitBounds(bounds, {padding: {top: 150, bottom: 150, left: 150, right: 150}});
+
+</script>
+{% endblock %}

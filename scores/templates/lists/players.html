@@ -1,0 +1,156 @@
+{% extends "site/base.html" %}
+{% load gravatar %}
+
+{% block title %}
+{{ block.super }} | Players
+{% endblock %}
+
+{% block mobile_title %}
+{{ block.super }} | Players
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+<div class="ui xtrapadded stackable relaxed grid container">
+
+    <div class="sixteen wide column">
+        <h4 class="ui horizontal divider header">
+            <i class="id card icon"></i>
+            Player Cards
+        </h4>
+
+        <div class="ui four stackable centered cards">
+            {% if player_list %}
+            {% for player in player_list %}
+            <div class="card">
+                <div class="image">
+                    <img src="{{ player.email|gravatar_url:300 }}">
+                </div>
+                <div class="content">
+                    <div class="header">
+                        <a href="{% url 'player-profile' player.pk %}" class="ui link">{{ player.get_short_name }}</a>
+                    </div>
+                </div>
+                <div class="extra content">
+                    <h5 class="ui horizontal divider header">
+                        <i class="gamepad icon"></i>
+                        Quick Statistics
+                    </h5>
+                    <div class="ui list">
+                        <div class="item">
+                            {{ player.num_games_played }} game{{ player.num_games_played|pluralize }} played
+                        </div>
+                        <div class="item">
+                            {{ player.num_games_won }} game{{ player.num_games_won|pluralize }} won
+                        </div>
+                        <div class="item">
+                            {{ player.num_games_lost }} game{{ player.num_games_lost|pluralize }} lost
+                        </div>
+                        <div class="item">
+                            Win/loss of {{ player.win_loss_per }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="card">
+                <div class="content">
+                    <div class="header">No players exist</div>
+                    <p>Try creating some in the admin UI!</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="eight wide column">
+        <div class= "ui raised segment" id="chart-player-wins" style="width:100%; height:300px;"></div>
+    </div>
+
+    <div class="eight wide column">
+        <div class= "ui raised segment" id="chart-player-point" style="width:100%; height:300px;"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $(document)
+            .ready(function() {
+                var playerPointChart = Highcharts.chart('chart-player-point', {
+                    chart: {
+                        type: 'bar'
+                    },
+                    title: {
+                        text: 'Total Points'
+                    },
+                    subtitle: {
+                        text: 'This Year'
+                    },
+                    xAxis: {
+                        categories: ['This Year'],
+                        labels: {
+                            enabled: false // disable labels
+                        }
+                    },
+                    yAxis: {
+                        allowDecimals: false,
+                        tickInterval: 10,
+                        title: {
+                            text: null
+                        }
+                    },
+                    series: [
+                        {% for score in scoresheets %}
+                            {
+                                name: "{{ score.player__first_name }}",
+                                data: [{{ score.total_points }}]
+                            }
+                        {% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    ]
+                });
+
+                var playerWinsChart = Highcharts.chart('chart-player-wins', {
+                    colors: ["#e74c3c", "#e67e22", "#f1c40f", "#2ecc71", "#3498db", "#9b59b6"],
+                    chart: {
+                        type: 'bar'
+                    },
+                    title: {
+                        text: 'Current Wins'
+                    },
+                    subtitle: {
+                        text: 'This Year'
+                    },
+                    xAxis: {
+                        categories: ['This Year'],
+                        labels: {
+                            enabled: false // disable labels
+                        }
+                    },
+                    yAxis: {
+                        allowDecimals: false,
+                        tickInterval: 1,
+                        title: {
+                            text: null
+                        }
+                    },
+                    series: [
+                        {% for game in games %}
+                            {
+                                name: "{{ game.winning_scoresheet__player__first_name }}",
+                                data: [{{ game.wins }}]
+                            }
+                        {% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    ]
+                });
+            })
+        ;
+    });
+</script>
+{% endblock %}

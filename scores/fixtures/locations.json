@@ -1,0 +1,26 @@
+[
+    {
+        "fields": {
+            "created": "2019-11-04T02:14:00.739Z",
+            "is_active": true,
+            "latitude": "39.727100",
+            "longitude": "-104.925770",
+            "modified": "2019-11-04T02:14:00.739Z",
+            "name": "Glencoe St"
+        },
+        "model": "scores.location",
+        "pk": "02648df7-d269-447a-aa83-83451fc14c7d"
+    },
+    {
+        "fields": {
+            "created": "2019-11-17T02:23:00.716Z",
+            "is_active": true,
+            "latitude": "39.733280",
+            "longitude": "-104.942590",
+            "modified": "2019-11-17T02:23:00.716Z",
+            "name": "Jackson St"
+        },
+        "model": "scores.location",
+        "pk": "7bbb604f-f1a9-4e71-8ce6-a6ce48d28786"
+    }
+]

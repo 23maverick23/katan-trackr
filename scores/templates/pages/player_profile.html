@@ -1,0 +1,223 @@
+{% extends "site/base.html" %}
+{% load gravatar %}
+{% load humanize %}
+{% load timing %}
+
+{% block title %}
+{{ block.super }} | {{ player.get_full_name }}
+{% endblock %}
+
+{% block mobile_title %}
+{{ block.super }} | {{ player.get_full_name }}
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+<div class="ui xtrapadded stackable relaxed grid container">
+    <div class="four wide column">
+        <div class="ui one column center aligned grid">
+            <div class="column">
+                <img class="ui centered medium circular image" src="{{ player.email|gravatar_url:300 }}">
+                <div class="ui huge center aligned header">
+                    <div class="content">
+                    {{ player.get_full_name }}
+                    <div class="sub header">Last played {{ player.last_played|naturaltime}}</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui segment">
+                    <div id="chart-last-five" style="width:100%; height:100px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="twelve wide column">
+        <h4 class="ui horizontal divider header">
+            <i class="quidditch icon"></i>
+            Game Statistics
+        </h4>
+
+        <div class="ui three column center aligned stackable grid">
+            
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                        {{ player.num_games_played }}
+                        </div>
+                        <div class="label">
+                        Games Played
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                        {{ player.num_games_won }}
+                        </div>
+                        <div class="label">
+                        Games Won
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                        {{ player.win_loss_per }}
+                        </div>
+                        <div class="label">
+                        Win Percentage
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="label">
+                            Total Time
+                            <br />Played
+                        </div>
+                        <div class="text value">
+                            {{ player.duration_played.sum|naturaldelta_duration }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui {{ most_common_color|lower }} statistic">
+                        <div class="label">
+                            Most Played
+                            <br />Color
+                        </div>
+                        <div class="text value">
+                            {{ most_common_color }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui {{ most_winning_color|lower }} statistic">
+                        <div class="label">
+                            Most Winning
+                            <br />Color
+                        </div>
+                        <div class="text value">
+                            {{ most_winning_color }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ui four column center aligned stackable grid segment">
+
+            <div class="sixteen wide column">
+                <div class="ui container">
+                    <div id="chart-points-by-edition" style="width:100%; height:400px;"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript">
+    $(function() {
+        $(document)
+            .ready(function() {
+                var lastFiveChart = Highcharts.chart('chart-last-five', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: 'Last {{ last_five|length }} Games'
+                    },
+                    xAxis: {
+                        lineWidth: 0,
+                        minorGridLineWidth: 0,
+                        lineColor: 'transparent',
+                        minorTickLength: 0,
+                        tickLength: 0,
+                        labels: {
+                            enabled: false
+                        }
+                    },
+                    yAxis: {
+                        min: 0,
+                        lineWidth: 0,
+                        gridLineWidth: 0,
+                        minorGridLineWidth: 0,
+                        lineColor: 'transparent',
+                        minorTickLength: 0,
+                        tickLength: 0,
+                        title: {
+                            text: undefined
+                        },
+                        labels: {
+                            enabled: false
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: undefined,
+                        pointFormat: '<tr><td style="padding:0"><b>{point.y:.0f} VPs</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    series: [{
+                        showInLegend: false,
+                        data: [{% for score in last_five %}{{ score.total_points }}{% if not forloop.last %}, {% endif %}{% endfor %}]
+
+                    }]
+                });
+
+                var myChart = Highcharts.chart('chart-points-by-edition', {
+                    chart: {
+                        type: 'bar'
+                    },
+                    title: {
+                        text: 'Average Points by Edition'
+                    },
+                    subtitle: {
+                        text: 'vs. All Competition'
+                    },
+                    xAxis: {
+                        categories: {{ edition_list|safe }}
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Victory Points'
+                        }
+                    },
+                    series: [{
+                        name: 'You',
+                        data: {{ my_edition_avg_list|safe }}
+                    }, {
+                        name: 'Competitors',
+                        data: {{ other_edition_avg_list|safe }}
+                    }]
+                });
+            })
+        ;
+    });
+</script>
+{% endblock %}

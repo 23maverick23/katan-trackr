@@ -1,0 +1,436 @@
+{% extends "site/base.html" %}
+{% load humanize %}
+{% load timing %}
+
+{% block title %}
+{{ block.super }} | Statistics
+{% endblock %}
+
+{% block mobile_title %}
+{{ block.super }} | Statistics
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+<div class="ui xtrapadded stackable relaxed grid container">
+
+    <div class="sixteen wide column">
+        <h4 class="ui horizontal divider header">
+            <i class="quidditch icon"></i>
+            Game Statistics
+        </h4>
+        <div class="ui stackable three column center aligned grid">
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                            {{ games_played_year }}
+                        </div>
+                        <div class="label">
+                            Game{{ games_played_year|pluralize }} This Year
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                            {{ games_played_this_month }}
+                        </div>
+                        <div class="label">
+                            Game{{ games_played_this_month|pluralize }} This Month
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                            {{ games_played_last_month }}
+                        </div>
+                        <div class="label">
+                            Game{{ games_played_last_month|pluralize }} Last Month
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inverted -->
+            
+            <div class="column">
+                <div class="ui inverted segment">
+                    <div class="ui inverted statistic">
+                        <div class="value">
+                            {{ game_durations.min|naturaldelta_duration }}
+                        </div>
+                        <div class="label">
+                            Shortest Game Time
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="ui inverted segment">
+                    <div class="ui inverted statistic">
+                        <div class="value">
+                            {{ game_durations.max|naturaldelta_duration }}
+                        </div>
+                        <div class="label">
+                            Longest Game Time
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="ui inverted segment">
+                    <div class="ui inverted statistic">
+                        <div class="value">
+                            {{ game_durations.sum|naturaldelta_duration }}
+                        </div>
+                        <div class="label">
+                            Total Time Played
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <h4 class="ui horizontal divider header">
+            <i class="user icon"></i>
+            Player Statistics
+        </h4>
+
+        <div class="ui stackable three column center aligned grid">
+            
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="label">
+                            Last Game
+                            <br />Won By
+                        </div>
+                        <div class="text value">
+                            {{ last_win.winning_scoresheet.player.first_name }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="label">
+                            Current
+                            <br />Win Streak
+                        </div>
+                        <div class="text value">
+                            {{ current_win_streak }} game{{ current_win_streak|pluralize }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="label">
+                            Most Wins
+                            <br />This Year
+                        </div>
+                        <div class="text value">
+                            {% for player in most_wins_year %}
+                            {% if player.num_wins == most_wins_year_max.max %}
+                            {{ player.winning_scoresheet__player__first_name }}
+                            <div class="floating ui black label">{{ player.num_wins }}</div>
+                            {% endif %}
+                            {% empty %}
+                            N/A
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Inverted -->
+
+            <div class="column">
+                <div class="ui inverted segment">
+                    <div class="ui inverted statistic">
+                        <div class="label">
+                            Most Settlements Built
+                            <br />This Year
+                        </div>
+                        <div class="text value">
+                            {% if scoresheets_most_settlements|length == 0 %}
+                            N/A
+                            {% else %}
+                            <i class="warehouse icon"></i> {{ scoresheets_most_settlements.0.player__first_name }}
+                            <div class="floating ui yellow label">{{ scoresheets_most_settlements.0.num_times }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="ui inverted segment">
+                    <div class="ui inverted statistic">
+                        <div class="label">
+                            Most Cities Built
+                            <br />This Year
+                        </div>
+                        <div class="text value">
+                            {% if scoresheets_most_cities|length == 0 %}
+                            N/A
+                            {% else %}
+                            <i class="building icon"></i> {{ scoresheets_most_cities.0.player__first_name }}
+                            <div class="floating ui yellow label">{{ scoresheets_most_cities.0.num_times }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="ui inverted segment">
+                    <div class="ui inverted statistic">
+                        <div class="label">
+                            Most Metropolises Built
+                            <br />This Year
+                        </div>
+                        <div class="text value">
+                            {% if scoresheets_most_metropolises|length == 0 %}
+                            N/A
+                            {% else %}
+                            <i class="university icon"></i> {{ scoresheets_most_metropolises.0.player__first_name }}
+                            <div class="floating ui yellow label">{{ scoresheets_most_metropolises.0.num_times }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <h4 class="ui horizontal divider header">
+            <i class="table icon"></i>
+            Scoresheet Statistics
+        </h4>
+
+        <div class="ui stackable three column center aligned grid">
+            
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                            <i class="green caret up icon"></i> {{ scoresheets_points.max|floatformat:"0" }}
+                        </div>
+                        <div class="label">
+                            Highest Score
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                            <i class="red caret down icon"></i> {{ scoresheets_points.min|floatformat:"0" }}
+                        </div>
+                        <div class="label">
+                            Lowest Score
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                            <i class="grey sort icon"></i> {{ scoresheets_points.avg|floatformat:"0" }}
+                        </div>
+                        <div class="label">
+                            Average Score
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <h4 class="ui horizontal divider header">
+            <i class="magic icon"></i>
+            Predictive Statistics
+        </h4>
+
+        <div class="ui stackable three column center aligned grid">
+        
+            <!-- Colored -->
+            
+            <div class="column">
+                <div class="ui inverted brown segment">
+                    <div class="ui inverted statistic">
+                        <div class="label">
+                            Most Likely to Go For
+                            <br />Longest Road
+                        </div>
+                        <div class="text value">
+                            {% if scoresheets_longest_road|length == 0 %}
+                            N/A
+                            {% else %}
+                            <i class="road icon"></i> {{ scoresheets_longest_road.0.player__first_name }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui inverted red segment">
+                    <div class="ui inverted statistic">
+                        <div class="label">
+                            Most Likely to Go For
+                            <br />Largest Army
+                        </div>
+                        <div class="text value">
+                            {% if scoresheets_largest_army|length == 0 %}
+                            N/A
+                            {% else %}
+                            <i class="users icon"></i> {{ scoresheets_largest_army.0.player__first_name }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui inverted purple segment">
+                    <div class="ui inverted statistic">
+                        <div class="label">
+                            Most Likely to Go For
+                            <br />Merchant
+                        </div>
+                        <div class="text value">
+                            {% if scoresheets_merchant|length == 0 %}
+                            N/A
+                            {% else %}
+                            <i class="male icon"></i> {{ scoresheets_merchant.0.player__first_name }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Colored -->
+
+            <div class="column">
+                <div class="ui inverted green segment">
+                    <div class="ui inverted statistic">
+                        <div class="label">
+                            Most Likely to Improve
+                            <br />Science
+                        </div>
+                        <div class="text value">
+                            {% if scoresheets_science|length == 0 %}
+                            N/A
+                            {% else %}
+                            {{ scoresheets_science.0.player__first_name }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui inverted blue segment">
+                    <div class="ui inverted statistic">
+                        <div class="label">
+                            Most Likely to Improve
+                            <br />Politics
+                        </div>
+                        <div class="text value">
+                            {% if scoresheets_politics|length == 0 %}
+                            N/A
+                            {% else %}
+                            {{ scoresheets_politics.0.player__first_name }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui inverted yellow segment">
+                    <div class="ui inverted statistic">
+                        <div class="label">
+                            Most Likely to Improve
+                            <br />Trade
+                        </div>
+                        <div class="text value">
+                            {% if scoresheets_trade|length == 0 %}
+                            N/A
+                            {% else %}
+                            {{ scoresheets_trade.0.player__first_name }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inverted -->
+
+            <div class="column">
+                <div class="ui inverted segment">
+                    <div class="ui inverted statistic">
+                        <div class="label">
+                            Most Likely to Get a
+                            <br />VP Card
+                        </div>
+                        <div class="text value">
+                            {% for player in most_vpcards %}
+                            {% if player.num_times == most_vpcards_max.max %}
+                            <i class="credit card icon"></i> {{ player.player__first_name }}
+                            {% endif %}
+                            {% empty %}
+                            N/A
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui inverted segment">
+                    <div class="ui inverted statistic">
+                        <div class="label">
+                            Most Likely to Score
+                            <br />Chits
+                        </div>
+                        <div class="text value">
+                            {% for player in most_chits %}
+                            {% if player.num_times == most_chits_max.max %}
+                            <i class="map marker alternate icon"></i> {{ player.player__first_name }}
+                            {% endif %}
+                            {% empty %}
+                            N/A
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
