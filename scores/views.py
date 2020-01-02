@@ -1,4 +1,5 @@
-from django.db.models import (Q, Count, Min, Max, Avg, Sum, F, Func, ExpressionWrapper, fields)
+from django.db.models import (Q, Count, Min, Max, Avg, Sum, F, Func, ExpressionWrapper, fields,
+                              Case, Value, When, IntegerField)
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import (render, get_object_or_404)
@@ -77,7 +78,15 @@ def statistics_page(request):
                                                 Q(metro_trade=True) \
                                                 ) \
                                                .values('player__first_name') \
-                                               .annotate(num_times=Count('pk')) \
+                                               .annotate( \
+                                                    num_times=Case( \
+                                                        When(Q(metro_science=True) & Q(metro_politics=True) & Q(metro_trade=True), then=Value(3)), \
+                                                        When(Q(metro_science=True) & Q(metro_politics=True) | Q(metro_science=True) & Q(metro_trade=True) | Q(metro_politics=True) & Q(metro_trade=True), then=Value(2)), \
+                                                        When(Q(metro_science=True) | Q(metro_politics=True) | Q(metro_trade=True), then=Value(1)), \
+                                                        default=Value(0), \
+                                                        output_field=IntegerField() \
+                                                        ) \
+                                                    ) \
                                                .order_by('-num_times')
 
     scoresheets_points = scoresheets.aggregate(

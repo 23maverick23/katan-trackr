@@ -220,8 +220,9 @@ class Game(BaseModel):
         )
 
     def get_display_name(self):
+        tz_date_start = timezone.localtime(self.date_start)
         game_str = "{} {}".format(
-            self.date_start.strftime('%A'), self.get_time_of_day().capitalize()
+            tz_date_start.strftime('%A'), self.get_time_of_day().capitalize()
         )
         return game_str
 
