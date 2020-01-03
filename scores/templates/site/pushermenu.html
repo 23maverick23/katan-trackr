@@ -14,11 +14,10 @@
         <a href="{% url 'editions' %}" class="item {{ editions_active }}">Editions</a>
         <a href="{% url 'locations' %}" class="item {{ locations_active }}">Locations</a>
         <div class="right item">
-            {% if user.is_authenticated %}
             <a href="{% url 'admin:index' %}" target="_blank" class="ui inverted button">Admin</a>
+            {% if user.is_authenticated %}
             <a href="{% url 'admin:logout' %}" target="_blank" class="ui inverted button">Log out</a>
             {% else %}
-            <a href="{% url 'admin:index' %}" target="_blank" class="ui inverted button">Log in</a>
             {% endif %}
         </div>
     </div>

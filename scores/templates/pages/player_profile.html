@@ -35,10 +35,10 @@
                 <div class="ui segment">
                     <div class="ui statistic">
                         <div class="value">
-                        {{ player.num_games_played }}
+                        {{ statistics.highest_score }}
                         </div>
                         <div class="label">
-                        Games Played
+                        Highest Score
                         </div>
                     </div>
                 </div>
@@ -48,10 +48,10 @@
                 <div class="ui segment">
                     <div class="ui statistic">
                         <div class="value">
-                        {{ player.num_games_won }}
+                        {{ statistics.lowest_score }}
                         </div>
                         <div class="label">
-                        Games Won
+                        Lowest Score
                         </div>
                     </div>
                 </div>
@@ -61,10 +61,10 @@
                 <div class="ui segment">
                     <div class="ui statistic">
                         <div class="value">
-                        {{ player.win_loss_per }}
+                        {{ statistics.average_score|floatformat:"0" }}
                         </div>
                         <div class="label">
-                        Win Percentage
+                        Average Score
                         </div>
                     </div>
                 </div>
@@ -120,6 +120,62 @@
             <i class="quidditch icon"></i>
             Game Statistics
         </h4>
+
+        <div class="ui four column center aligned stackable grid">
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                        {{ player.num_games_played }}
+                        </div>
+                        <div class="label">
+                        Games Played
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                        {{ player.num_games_won }}
+                        </div>
+                        <div class="label">
+                        Games Won
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                        {{ player.win_loss_per }}
+                        </div>
+                        <div class="label">
+                        Win Percentage
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                        {{ statistics.lifetime_points }}
+                        </div>
+                        <div class="label">
+                        Lifetime Points
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
         <div class="ui one column center aligned stackable grid segment">
 

@@ -216,7 +216,7 @@ def player_profile_page(request, player):
         highest_score=Max('total_points'),
         lowest_score=Min('total_points'),
         average_score=Avg('total_points'),
-        lifetime_points=Sum('total_points'),
+        lifetime_points=Sum('total_points')
     )
 
     last_five = scoresheets[:10]
