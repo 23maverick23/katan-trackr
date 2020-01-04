@@ -236,8 +236,10 @@ def player_profile_page(request, player):
                                        .order_by('game__edition__game_type', 'game__edition__name') \
                                        .annotate(avg=Round(Avg('total_points')))
 
-    editions = Edition.objects.filter(is_active=True).values('name').order_by('game_type', 'name')
-    edition_list = [e['name'] for e in editions]
+    editions = Edition.objects.filter(is_active=True).values('name').order_by(Lower('game_type').asc(), Length('game_type').asc())
+
+    # edition_list = [e['name'] for e in editions] # this produces a list of all editions, which won't work for highcharts
+    edition_list = [e['game__edition__name'] for e in avg_points_by_edition]
 
     my_edition_avg_list = [[edition_list.index(e['game__edition__name']), e['avg']] for e in avg_points_by_edition]
 
