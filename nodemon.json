@@ -1,0 +1,4 @@
+{
+  "watch": ["scores/", "katan_trackr/"],
+  "ext": "js, css, py, html"
+}
