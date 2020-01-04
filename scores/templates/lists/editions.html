@@ -35,7 +35,7 @@
                     <span class="stay">{{ edition.points }} VPs</span>
                 </div>
                 <div class="description">
-                    <p>{{ edition.description }}</p>
+                    {{ edition.description|linebreaks }}
                 </div>
                 <div class="extra">
                     <div class="ui label"><i class="users icon"></i> {{ edition.get_max_players_display }}</div>

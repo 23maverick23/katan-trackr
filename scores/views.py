@@ -166,20 +166,20 @@ def statistics_page(request):
     return render(request, template, context)
 
 
-def edition_page(request):
-    active_editions = Edition.objects.filter(is_active=True) \
-                                     .order_by(Lower('game_type').asc(), Length('game_type').asc())
-
-    template = 'pages/editions.html'
-    context = {"edition_list": active_editions, "editions_active": "active"}
-    return render(request, template, context)
-
-
 def location_page(request):
     active_locations = Location.objects.filter(is_active=True)
 
     template = 'pages/locations.html'
     context = {"location_list": active_locations, "locations_active": "active"}
+    return render(request, template, context)
+
+
+def edition_list(request):
+    active_editions = Edition.objects.filter(is_active=True) \
+                                     .order_by(Lower('game_type').asc(), Length('name').asc())
+
+    template = 'list/editions.html'
+    context = {"edition_list": active_editions, "editions_active": "active"}
     return render(request, template, context)
 
 
