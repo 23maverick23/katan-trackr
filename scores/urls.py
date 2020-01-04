@@ -7,9 +7,9 @@ urlpatterns = [
 
     path('statistics/', views.statistics_page, name='statistics'),
 
-    path('editions/', views.edition_page, name='editions'),
-
     path('locations/', views.location_page, name='locations'),
+
+    path('editions/', views.edition_list, name='editions'),
 
     path('players/', views.player_list, name='players'),
     path('players/profile/<player>', views.player_profile_page, name='player-profile'),

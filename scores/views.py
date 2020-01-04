@@ -178,7 +178,7 @@ def edition_list(request):
     active_editions = Edition.objects.filter(is_active=True) \
                                      .order_by(Lower('game_type').asc(), Length('name').asc())
 
-    template = 'list/editions.html'
+    template = 'lists/editions.html'
     context = {"edition_list": active_editions, "editions_active": "active"}
     return render(request, template, context)
 
