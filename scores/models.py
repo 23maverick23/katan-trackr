@@ -7,6 +7,8 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils import timezone
 
+from .managers import OrderedEditionManager
+
 
 class UserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
@@ -131,19 +133,23 @@ class Location(BaseModel):
 
 
 class Edition(BaseModel):
+    TWO = '24'
     FOUR = '34'
     SIX = '56'
     EDITION_PLAYERS = [
+        (TWO, '2-4'),
         (FOUR, '3-4'),
         (SIX, '5-6')
     ]
     BASE = 'B'
     EXPANSION = 'E'
+    COMBO = 'M'
     EDITION_TYPE = [
         (BASE, 'Base Game'),
-        (EXPANSION, 'Expansion')
+        (EXPANSION, 'Expansion'),
+        (COMBO, 'Expansion Combination')
     ]
-    name = models.CharField("edition's nickname", max_length=30, blank=False, null=False)
+    name = models.CharField("edition's nickname", max_length=75, blank=False, null=False)
     description = models.TextField("description", blank=False, null=False)
     game_type = models.CharField("edition type", max_length=1, choices=EDITION_TYPE, default=BASE,
                                  blank=False, null=False)
@@ -151,9 +157,10 @@ class Edition(BaseModel):
                                    default=FOUR, blank=False, null=False)
     duration = models.CharField("duration", max_length=30, blank=False, null=False)
     points = models.IntegerField("VPs to win", blank=False, null=False)
+    image_tag = models.CharField("image tag", max_length=30, blank=True, null=True)
 
-    class Meta:
-        ordering = ('game_type', 'name', )
+    objects = models.Manager()
+    ordered_objects = OrderedEditionManager()
 
     def __str__(self):
         return "{} ({})".format(self.name, self.get_game_type_display())

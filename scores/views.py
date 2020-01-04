@@ -1,5 +1,6 @@
 from django.db.models import (Q, Count, Min, Max, Avg, Sum, F, Func, ExpressionWrapper, fields,
                               Case, Value, When, IntegerField)
+from django.db.models.functions import Lower, Length
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import (render, get_object_or_404)
@@ -166,7 +167,8 @@ def statistics_page(request):
 
 
 def edition_page(request):
-    active_editions = Edition.objects.filter(is_active=True)
+    active_editions = Edition.objects.filter(is_active=True) \
+                                     .order_by(Lower('game_type').asc(), Length('game_type').asc())
 
     template = 'pages/editions.html'
     context = {"edition_list": active_editions, "editions_active": "active"}

@@ -108,9 +108,9 @@ class LocationAdmin(BaseAdmin):
 
 @admin.register(Edition)
 class EditionAdmin(BaseAdmin):
-    fields = (('name', 'game_type'), ('description'),
+    fields = (('name', 'game_type', 'image_tag'), ('description'),
               ('max_players', 'duration', 'points'))
-    list_display = ('name', 'game_type', 'max_players', 'duration', 'points', 'times_played')
+    list_display = ('name', 'game_type', 'image_tag', 'max_players', 'duration', 'points', 'times_played')
     exclude = ('is_active', )
 
     def times_played(self, obj):

@@ -1,4 +1,5 @@
 {% extends "site/base.html" %}
+{% load static %}
 {% load humanize %}
 {% load timing %}
 
@@ -36,8 +37,17 @@
                 </td>
                 <td>
                     <h5 class="ui header">
-                        {{ game.edition }}
-                        <div class="sub header">{{ game.edition.short_description }}</div>
+                        {% if game.edition.image_tag %}
+                            {% with 'scores/images/box_icon_'|add:game.edition.image_tag|add:'.png' as image_static %}
+                            <img class="ui middle aligned image" src="{% static image_static %}">
+                            {% endwith %}
+                        {% else %}
+                        <img class="ui middle aligned image" src="{% static 'scores/images/box_icon_.png' %}">
+                        {% endif %}
+                        <div class="content">
+                            {{ game.edition }}
+                            <div class="sub header">{{ game.edition.short_description }}</div>
+                        </div>
                     </h5>
                 </td>
                 <td>

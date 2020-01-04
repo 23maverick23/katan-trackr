@@ -1,4 +1,5 @@
 {% extends "site/base.html" %}
+{% load static %}
 {% load timing %}
 
 {% block title %}
@@ -13,44 +14,47 @@
 {{ block.super }}
 
 <div class="ui xtrapadded container">
-    <div class="ui four stackable cards">
+    <div class="ui relaxed divided items">
+        
         {% if edition_list %}
         {% for edition in edition_list %}
-        <div class="card">
+        <div class="item">
             <div class="image">
-                <img src="">
+                {% if edition.image_tag %}
+                    {% with 'scores/images/box_icon_'|add:edition.image_tag|add:'.png' as image_static %}
+                    <img src="{% static image_static %}">
+                    {% endwith %}
+                {% else %}
+                <img src="{% static 'scores/images/box_icon_.png' %}">
+                {% endif %}
             </div>
-            <div class="content">
+            <div class="middle aligned content">
                 <div class="header">{{ edition.name }}</div>
                 <div class="meta">
-                    <span>{{ edition.get_game_type_display }}</span>
-                    <span class="right floated">{{ edition.points }} VPs</span>
+                    <span class="price">{{ edition.get_game_type_display }}</span>
+                    <span class="stay">{{ edition.points }} VPs</span>
                 </div>
                 <div class="description">
-                    {{ edition.description }}
+                    <p>{{ edition.description }}</p>
                 </div>
-            </div>
-            <div class="extra content">
-                <span class="left floated like">
-                    <i class="users icon"></i>
-                    {{ edition.get_max_players_display }}
-                </span>
-                <span class="right floated star">
-                    <i class="clock outline icon"></i>
-                    {{ edition.duration }}
-                </span>
-            </div>
-            <div class="extra content">
-                <div class="meta">
-                    <span>You have played this edition <strong>{{ edition.games_played }} time{{ edition.games_played|pluralize }}</strong> for a total of <strong>{{ edition.duration_played.sum|naturaldelta_duration }}</strong>.</span>
+                <div class="extra">
+                    <div class="ui label"><i class="users icon"></i> {{ edition.get_max_players_display }}</div>
+                    <div class="ui label"><i class="clock outline icon"></i> {{ edition.duration }}</div>
+                </div>
+                <div class="extra">
+                    <div class="meta">
+                        <span>You have played this edition <strong>{{ edition.games_played }} time{{ edition.games_played|pluralize }}</strong> for a total of <strong>{{ edition.duration_played.sum|naturaldelta_duration }}</strong>.</span>
+                    </div>
                 </div>
             </div>
         </div>
         {% endfor %}
         {% else %}
-        <div class="card">
+        <div class="item">
             <div class="content">
                 <div class="header">No editions exist</div>
+            </div>
+            <div class="description">
                 <p>Try creating some in the admin UI!</p>
             </div>
         </div>
