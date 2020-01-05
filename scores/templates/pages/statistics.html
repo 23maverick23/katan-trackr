@@ -102,6 +102,38 @@
                 </div>
             </div>
 
+            <!-- Normal -->
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                            {{ editions_played|length }}
+                        </div>
+                        <div class="label">
+                            Edition{{ editions_played|length|pluralize }} Played
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="label">
+                            Favorite Edition
+                        </div>
+                        <div class="text value">
+                            {% if editions_played|length == 0 %}
+                            N/A
+                            {% else %}
+                            {{ editions_played.0.edition__name }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <h4 class="ui horizontal divider header">
@@ -387,6 +419,24 @@
             </div>
 
             <!-- Inverted -->
+
+            <div class="column">
+                <div class="ui inverted grey segment">
+                    <div class="ui inverted statistic">
+                        <div class="label">
+                            Most Likely to Go For
+                            <br />Harbormaster
+                        </div>
+                        <div class="text value">
+                            {% if scoresheets_harbormaster|length == 0 %}
+                            N/A
+                            {% else %}
+                            <i class="ship icon"></i> {{ scoresheets_harbormaster.0.player__first_name }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="column">
                 <div class="ui inverted segment">

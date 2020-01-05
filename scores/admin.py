@@ -108,7 +108,7 @@ class LocationAdmin(BaseAdmin):
 
 @admin.register(Edition)
 class EditionAdmin(BaseAdmin):
-    fields = (('name', 'game_type', 'image_tag'), ('description'),
+    fields = (('name', 'game_type', 'image_tag', 'rules_url', 'skills'), ('description'),
               ('max_players', 'duration', 'points'))
     list_display = ('name', 'game_type', 'image_tag', 'max_players', 'duration', 'points', 'times_played')
     exclude = ('is_active', )
@@ -128,12 +128,12 @@ class ScoresheetInline(admin.TabularInline):
 class ScoresheetAdmin(BaseAdmin):
     fieldsets = (
         (None, {
-            'fields': (('game', 'player', 'color', 'starting_position'), )
+            'fields': (('game', 'player', 'color', 'start_position'), )
         }),
         ('Point tracking', {
             'fields': ('total_points', ('num_settlements', 'num_cities'),
                        ('num_vpcards', 'num_chits'),
-                       ('longest_road', 'largest_army', 'merchant'),
+                       ('longest_road', 'largest_army', 'merchant', 'harbormaster'),
                        ('metro_science', 'metro_politics', 'metro_trade')
             )
         }),

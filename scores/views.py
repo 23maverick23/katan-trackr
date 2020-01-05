@@ -60,6 +60,10 @@ def statistics_page(request):
                                       .annotate(num_wins=Count('pk')) \
                                       .order_by('-num_wins')
 
+    editions_played = games_played.values('edition__name') \
+                                  .annotate(num_editions=Count('edition')) \
+                                  .order_by('-num_editions')
+
     scoresheets = Scoresheet.objects.filter(is_active=True)
 
     scoresheets_most_settlements = scoresheets.filter(game__date_start__year=today.year) \
@@ -111,6 +115,11 @@ def statistics_page(request):
                                       .annotate(num_times=Count('pk')) \
                                       .order_by('-num_times')
 
+    scoresheets_harbormaster = scoresheets.filter(harbormaster=True) \
+                                      .values('player__first_name') \
+                                      .annotate(num_times=Count('pk')) \
+                                      .order_by('-num_times')
+
     scoresheets_science = scoresheets.filter(metro_science=True) \
                                       .values('player__first_name') \
                                       .annotate(num_times=Count('pk')) \
@@ -146,6 +155,8 @@ def statistics_page(request):
         "most_wins_year": most_wins_year,
         "most_wins_last_year": most_wins_last_year,
 
+        "editions_played": editions_played,
+
         "scoresheets_most_settlements": scoresheets_most_settlements,
         "scoresheets_most_cities": scoresheets_most_cities,
         "scoresheets_most_metropolises": scoresheets_most_metropolises,
@@ -154,6 +165,7 @@ def statistics_page(request):
         "scoresheets_longest_road": scoresheets_longest_road,
         "scoresheets_largest_army": scoresheets_largest_army,
         "scoresheets_merchant": scoresheets_merchant,
+        "scoresheets_harbormaster": scoresheets_harbormaster,
         "scoresheets_science": scoresheets_science,
         "scoresheets_politics": scoresheets_politics,
         "scoresheets_trade": scoresheets_trade,

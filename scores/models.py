@@ -158,6 +158,11 @@ class Edition(BaseModel):
     duration = models.CharField("duration", max_length=30, blank=False, null=False)
     points = models.IntegerField("VPs to win", blank=False, null=False)
     image_tag = models.CharField("image tag", max_length=30, blank=True, null=True)
+    skills = models.TextField("skills", blank=True, null=True)
+    rules_url = models.URLField("rules url", blank=True, null=True)
+
+    class Meta:
+        ordering = ('game_type', )
 
     objects = models.Manager()
     ordered_objects = OrderedEditionManager()
@@ -279,6 +284,7 @@ class Scoresheet(BaseModel):
     metro_politics = models.BooleanField("politics metropolis", default=False, blank=False)
     metro_trade = models.BooleanField("trade metropolis", default=False, blank=False)
     merchant = models.BooleanField("merchant VP", default=False, blank=False)
+    harbormaster = models.BooleanField("harbormaster VP", default=False, blank=False)
 
     class Meta:
         ordering = ('-total_points', )

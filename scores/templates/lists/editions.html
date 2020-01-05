@@ -38,8 +38,16 @@
                     {{ edition.description|linebreaks }}
                 </div>
                 <div class="extra">
-                    <div class="ui label"><i class="users icon"></i> {{ edition.get_max_players_display }}</div>
-                    <div class="ui label"><i class="clock outline icon"></i> {{ edition.duration }}</div>
+                    <div class="ui labels">
+                        <div class="ui label"><i class="users icon"></i> {{ edition.get_max_players_display }}</div>
+                        <div class="ui label"><i class="clock outline icon"></i> {{ edition.duration }}</div>
+                        {% if edition.skills %}<div class="ui label"><i class="magic icon"></i> {{ edition.skills }}</div>{% endif %}
+                        {% if edition.rules_url %}
+                        <a class="ui blue label" href="{{ edition.rules_url }}" target="_blank">
+                            <i class="file pdf outline icon"></i> Download Rules
+                        </a>
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="extra">
                     <div class="meta">

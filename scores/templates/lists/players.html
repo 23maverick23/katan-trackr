@@ -24,27 +24,55 @@
             {% for player in player_list %}
             <div class="card">
                 <div class="content">
-                    <div class="header">
+                    <div class="center aligned header">
                         <a href="{% url 'player-profile' player.pk %}" class="ui link">{{ player.get_short_name }}</a>
                     </div>
                 </div>
                 <div class="extra content">
-                    <h5 class="ui horizontal divider header">
-                        <i class="gamepad icon"></i>
-                        Quick Statistics
-                    </h5>
-                    <div class="ui list">
-                        <div class="item">
-                            {{ player.num_games_played }} game{{ player.num_games_played|pluralize }} played
+                    <div class="ui two column center aligned grid">
+
+                        <div class="column">
+                            <div class="ui tiny statistic">
+                                <div class="value">
+                                {{ player.num_games_played }}
+                                </div>
+                                <div class="label">
+                                Played
+                                </div>
+                            </div>
                         </div>
-                        <div class="item">
-                            {{ player.num_games_won }} game{{ player.num_games_won|pluralize }} won
+
+                        <div class="column">
+                            <div class="ui tiny statistic">
+                                <div class="value">
+                                {{ player.win_loss_per }}
+                                </div>
+                                <div class="label">
+                                W/L ratio
+                                </div>
+                            </div>
                         </div>
-                        <div class="item">
-                            {{ player.num_games_lost }} game{{ player.num_games_lost|pluralize }} lost
+
+                        <div class="column">
+                            <div class="ui tiny statistic">
+                                <div class="value">
+                                {{ player.num_games_won }}
+                                </div>
+                                <div class="label">
+                                Win{{ player.num_games_won|pluralize}}
+                                </div>
+                            </div>
                         </div>
-                        <div class="item">
-                            Win/loss of {{ player.win_loss_per }}
+
+                        <div class="column">
+                            <div class="ui tiny statistic">
+                                <div class="value">
+                                {{ player.num_games_lost }}
+                                </div>
+                                <div class="label">
+                                Loss{{ player.num_games_lost|pluralize:"es" }}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
