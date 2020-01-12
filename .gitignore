@@ -230,3 +230,7 @@ GitHub.sublime-settings
 
 # Pixelmator source files
 .pxm
+
+# Environment
+.env
+.envrc
