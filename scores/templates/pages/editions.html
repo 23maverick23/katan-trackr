@@ -1,0 +1,60 @@
+{% extends "site/base.html" %}
+{% load timing %}
+
+{% block title %}
+{{ block.super }} | Editions
+{% endblock %}
+
+{% block mobile_title %}
+{{ block.super }} | Editions
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+<div class="ui xtrapadded container">
+    <div class="ui four stackable cards">
+        {% if edition_list %}
+        {% for edition in edition_list %}
+        <div class="card">
+            <div class="image">
+                <img src="">
+            </div>
+            <div class="content">
+                <div class="header">{{ edition.name }}</div>
+                <div class="meta">
+                    <span>{{ edition.get_game_type_display }}</span>
+                    <span class="right floated">{{ edition.points }} VPs</span>
+                </div>
+                <div class="description">
+                    {{ edition.description }}
+                </div>
+            </div>
+            <div class="extra content">
+                <span class="left floated like">
+                    <i class="users icon"></i>
+                    {{ edition.get_max_players_display }}
+                </span>
+                <span class="right floated star">
+                    <i class="clock outline icon"></i>
+                    {{ edition.duration }}
+                </span>
+            </div>
+            <div class="extra content">
+                <div class="meta">
+                    <span>You have played this edition <strong>{{ edition.games_played }} time{{ edition.games_played|pluralize }}</strong> for a total of <strong>{{ edition.duration_played.sum|naturaldelta_duration }}</strong>.</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="card">
+            <div class="content">
+                <div class="header">No editions exist</div>
+                <p>Try creating some in the admin UI!</p>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

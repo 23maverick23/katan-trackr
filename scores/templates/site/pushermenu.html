@@ -14,10 +14,18 @@
         <a href="{% url 'editions' %}" class="item {{ editions_active }}">Editions</a>
         <a href="{% url 'locations' %}" class="item {{ locations_active }}">Locations</a>
         <div class="right item">
+<<<<<<< HEAD
             <a href="{% url 'admin:index' %}" target="_blank" class="ui inverted button">Admin</a>
             {% if user.is_authenticated %}
             <a href="{% url 'admin:logout' %}" class="ui inverted button">Log out</a>
             {% else %}
+=======
+            {% if user.is_authenticated %}
+            <a href="{% url 'admin:index' %}" target="_blank" class="ui inverted button">Admin</a>
+            <a href="{% url 'admin:logout' %}" target="_blank" class="ui inverted button">Log out</a>
+            {% else %}
+            <a href="{% url 'admin:index' %}" target="_blank" class="ui inverted button">Log in</a>
+>>>>>>> Adding Django app files
             {% endif %}
         </div>
     </div>

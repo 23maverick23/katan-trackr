@@ -11,12 +11,18 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+<<<<<<< HEAD
 import django_heroku
+=======
+>>>>>>> Adding Django app files
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+<<<<<<< HEAD
 ADMINS = [('RyMo', '23maverick23@gmail.com')]
+=======
+>>>>>>> Adding Django app files
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -30,7 +36,11 @@ MAPBOX_KEY = os.environ.get('MAPBOX_KEY', None)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+<<<<<<< HEAD
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
+=======
+ALLOWED_HOSTS = []
+>>>>>>> Adding Django app files
 
 # Application definition
 
@@ -123,7 +133,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
+<<<<<<< HEAD
 TIME_ZONE = 'America/Denver'
+=======
+TIME_ZONE = 'UTC'
+>>>>>>> Adding Django app files
 
 USE_I18N = True
 
@@ -136,12 +150,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+<<<<<<< HEAD
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+=======
+>>>>>>> Adding Django app files
 
 # Login settings
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+<<<<<<< HEAD
 
 # Configure Django App for Heroku.
 django_heroku.settings(locals())
+=======
+>>>>>>> Adding Django app files

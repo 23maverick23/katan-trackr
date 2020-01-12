@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 from django.db.models import (Q, Count, Min, Max, Avg, Sum, F, Func, ExpressionWrapper, fields,
                               Case, Value, When, IntegerField)
 from django.db.models.functions import Lower, Length
+=======
+from django.db.models import (Q, Count, Min, Max, Avg, Sum, F, Func, ExpressionWrapper, fields)
+>>>>>>> Adding Django app files
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import (render, get_object_or_404)
@@ -52,6 +56,7 @@ def statistics_page(request):
 
     most_wins_year = games_played.filter(date_start__year=today.year) \
                                  .values('winning_scoresheet__player__first_name') \
+<<<<<<< HEAD
                                  .annotate(num_wins=Count('pk')) \
                                  .order_by('-num_wins')
 
@@ -63,11 +68,23 @@ def statistics_page(request):
     editions_played = games_played.values('edition__name') \
                                   .annotate(num_editions=Count('edition')) \
                                   .order_by('-num_editions')
+=======
+                                 .order_by('winning_scoresheet__player__first_name') \
+                                 .annotate(num_wins=Count('pk'))
+    most_wins_year_max = most_wins_year.aggregate(max=Max('num_wins'))
+
+    most_wins_last_year = games_played.filter(date_start__year=today_last_year.year) \
+                                      .values('winning_scoresheet__player__first_name') \
+                                      .order_by('winning_scoresheet__player__first_name') \
+                                      .annotate(num_wins=Count('pk'))
+    most_wins_last_year_max = most_wins_year.aggregate(max=Max('num_wins'))
+>>>>>>> Adding Django app files
 
     scoresheets = Scoresheet.objects.filter(is_active=True)
 
     scoresheets_most_settlements = scoresheets.filter(game__date_start__year=today.year) \
                                               .values('player__first_name') \
+<<<<<<< HEAD
                                               .annotate(num_times=Sum('num_settlements')) \
                                               .order_by('-num_times') \
 
@@ -76,6 +93,14 @@ def statistics_page(request):
                                          .annotate(num_times=Sum('num_cities')) \
                                          .order_by('-num_times')
 
+=======
+                                              .order_by('player__first_name') \
+                                              .annotate(num_times=Sum('num_settlements'))
+    scoresheets_most_cities = scoresheets.filter(game__date_start__year=today.year) \
+                                         .values('player__first_name') \
+                                         .order_by('player__first_name') \
+                                         .annotate(num_times=Sum('num_cities'))
+>>>>>>> Adding Django app files
     scoresheets_most_metropolises = scoresheets.filter(
                                                 Q(game__date_start__year=today.year) & \
                                                 Q(metro_science=True) | \
@@ -83,6 +108,7 @@ def statistics_page(request):
                                                 Q(metro_trade=True) \
                                                 ) \
                                                .values('player__first_name') \
+<<<<<<< HEAD
                                                .annotate( \
                                                     num_times=Case( \
                                                         When(Q(metro_science=True) & Q(metro_politics=True) & Q(metro_trade=True), then=Value(3)), \
@@ -93,6 +119,10 @@ def statistics_page(request):
                                                         ) \
                                                     ) \
                                                .order_by('-num_times')
+=======
+                                               .order_by('player__first_name') \
+                                               .annotate(num_times=Count('pk'))
+>>>>>>> Adding Django app files
 
     scoresheets_points = scoresheets.aggregate(
                                                max=Max('total_points'),
@@ -102,6 +132,7 @@ def statistics_page(request):
 
     scoresheets_longest_road = scoresheets.filter(longest_road=True) \
                                           .values('player__first_name') \
+<<<<<<< HEAD
                                           .annotate(num_times=Count('pk')) \
                                           .order_by('-num_times')
 
@@ -142,6 +173,45 @@ def statistics_page(request):
     most_chits = scoresheets.values('player__first_name') \
                             .annotate(num_times=Sum('num_chits')) \
                             .order_by('-num_times')
+=======
+                                          .order_by('player__first_name') \
+                                          .annotate(num_times=Count('pk'))
+
+    scoresheets_largest_army = scoresheets.filter(largest_army=True) \
+                                          .values('player__first_name') \
+                                          .order_by('player__first_name') \
+                                          .annotate(num_times=Count('pk'))
+
+    scoresheets_merchant = scoresheets.filter(merchant=True) \
+                                      .values('player__first_name') \
+                                      .order_by('player__first_name') \
+                                      .annotate(num_times=Count('pk'))
+
+    scoresheets_science = scoresheets.filter(metro_science=True) \
+                                      .values('player__first_name') \
+                                      .order_by('player__first_name') \
+                                      .annotate(num_times=Count('pk'))
+
+    scoresheets_politics = scoresheets.filter(metro_politics=True) \
+                                      .values('player__first_name') \
+                                      .order_by('player__first_name') \
+                                      .annotate(num_times=Count('pk'))
+
+    scoresheets_trade = scoresheets.filter(metro_trade=True) \
+                                      .values('player__first_name') \
+                                      .order_by('player__first_name') \
+                                      .annotate(num_times=Count('pk'))
+
+    most_vpcards = scoresheets.values('player__first_name') \
+                              .order_by('player__first_name') \
+                              .annotate(num_times=Sum('num_vpcards'))
+    most_vpcards_max = most_vpcards.aggregate(max=Max('num_times'))
+
+    most_chits = scoresheets.values('player__first_name') \
+                            .order_by('player__first_name') \
+                            .annotate(num_times=Sum('num_chits'))
+    most_chits_max = most_chits.aggregate(max=Max('num_times'))
+>>>>>>> Adding Django app files
 
     template = 'pages/statistics.html'
     context = {
@@ -153,9 +223,15 @@ def statistics_page(request):
         "last_win": last_win,
         "current_win_streak": current_win_streak,
         "most_wins_year": most_wins_year,
+<<<<<<< HEAD
         "most_wins_last_year": most_wins_last_year,
 
         "editions_played": editions_played,
+=======
+        "most_wins_year_max": most_wins_year_max,
+        "most_wins_last_year": most_wins_last_year,
+        "most_wins_last_year_max": most_wins_last_year_max,
+>>>>>>> Adding Django app files
 
         "scoresheets_most_settlements": scoresheets_most_settlements,
         "scoresheets_most_cities": scoresheets_most_cities,
@@ -165,19 +241,29 @@ def statistics_page(request):
         "scoresheets_longest_road": scoresheets_longest_road,
         "scoresheets_largest_army": scoresheets_largest_army,
         "scoresheets_merchant": scoresheets_merchant,
+<<<<<<< HEAD
         "scoresheets_harbormaster": scoresheets_harbormaster,
+=======
+>>>>>>> Adding Django app files
         "scoresheets_science": scoresheets_science,
         "scoresheets_politics": scoresheets_politics,
         "scoresheets_trade": scoresheets_trade,
 
         "most_vpcards": most_vpcards,
+<<<<<<< HEAD
         "most_chits": most_chits,
+=======
+        "most_vpcards_max": most_vpcards_max,
+        "most_chits": most_chits,
+        "most_chits_max": most_chits_max,
+>>>>>>> Adding Django app files
 
         "statistics_active": "active"
     }
     return render(request, template, context)
 
 
+<<<<<<< HEAD
 def location_page(request):
     active_locations = Location.objects.filter(is_active=True)
 
@@ -192,6 +278,21 @@ def edition_list(request):
 
     template = 'lists/editions.html'
     context = {"edition_list": active_editions, "editions_active": "active"}
+=======
+def edition_page(request):
+    active_editions = Edition.objects.filter(is_active=True)
+
+    template = 'pages/editions.html'
+    context = {"edition_list": active_editions, "editions_active": "active"}
+    return render(request, template, context)
+
+
+def location_page(request):
+    active_locations = Location.objects.filter(is_active=True)
+
+    template = 'pages/locations.html'
+    context = {"location_list": active_locations, "locations_active": "active"}
+>>>>>>> Adding Django app files
     return render(request, template, context)
 
 
@@ -222,18 +323,29 @@ def player_list(request):
 def player_profile_page(request, player):
     player = get_object_or_404(Player, pk=player)
 
+<<<<<<< HEAD
     scoresheets = Scoresheet.objects.filter(is_active=True) \
                                     .filter(player=player.pk) \
                                     .order_by('-game__date_start')
 
+=======
+    scoresheets = Scoresheet.objects.filter(is_active=True).filter(player=player.pk)
+>>>>>>> Adding Django app files
     statistics = scoresheets.aggregate(
         highest_score=Max('total_points'),
         lowest_score=Min('total_points'),
         average_score=Avg('total_points'),
+<<<<<<< HEAD
         lifetime_points=Sum('total_points')
     )
 
     last_five = scoresheets[:10]
+=======
+        lifetime_points=Sum('total_points'),
+    )
+
+    last_five = scoresheets.order_by('-game__date_start')[:10]
+>>>>>>> Adding Django app files
 
     class Round(Func):
         function = "ROUND"
@@ -248,10 +360,15 @@ def player_profile_page(request, player):
                                        .order_by('game__edition__game_type', 'game__edition__name') \
                                        .annotate(avg=Round(Avg('total_points')))
 
+<<<<<<< HEAD
     editions = Edition.objects.filter(is_active=True).values('name').order_by(Lower('game_type').asc(), Length('game_type').asc())
 
     # edition_list = [e['name'] for e in editions] # this produces a list of all editions, which won't work for highcharts
     edition_list = [e['game__edition__name'] for e in avg_points_by_edition]
+=======
+    editions = Edition.objects.filter(is_active=True).values('name').order_by('game_type', 'name')
+    edition_list = [e['name'] for e in editions]
+>>>>>>> Adding Django app files
 
     my_edition_avg_list = [[edition_list.index(e['game__edition__name']), e['avg']] for e in avg_points_by_edition]
 
@@ -261,7 +378,10 @@ def player_profile_page(request, player):
     games_by_color = scoresheets.values('color') \
                                    .annotate(mc=Count('color')) \
                                    .order_by('-mc')
+<<<<<<< HEAD
 
+=======
+>>>>>>> Adding Django app files
     wins_by_color = Game.objects.filter(is_active=True) \
                                 .filter(winning_scoresheet__player=player.pk) \
                                 .values('winning_scoresheet__color') \
@@ -270,6 +390,7 @@ def player_profile_page(request, player):
 
     color_names = dict(Scoresheet.PLAYER_COLORS)
     most_common_color = color_names[games_by_color[0]['color']]
+<<<<<<< HEAD
 
     if not wins_by_color:
         most_winning_color = "N/A"
@@ -279,12 +400,18 @@ def player_profile_page(request, player):
     paginator = Paginator(scoresheets, 5)
     page = request.GET.get('page')
     player_scoresheets = paginator.get_page(page)
+=======
+    most_winning_color = color_names[wins_by_color[0]['winning_scoresheet__color']]
+>>>>>>> Adding Django app files
 
     template = 'pages/player_profile.html'
     context = {
         "player": player,
+<<<<<<< HEAD
         "scoresheets": player_scoresheets,
         "page_num": player_scoresheets.number,
+=======
+>>>>>>> Adding Django app files
         "last_five": last_five,
         "statistics": statistics,
         "edition_list": edition_list,

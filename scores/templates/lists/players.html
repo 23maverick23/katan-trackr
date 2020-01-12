@@ -1,4 +1,8 @@
 {% extends "site/base.html" %}
+<<<<<<< HEAD
+=======
+{% load gravatar %}
+>>>>>>> Adding Django app files
 
 {% block title %}
 {{ block.super }} | Players
@@ -23,12 +27,21 @@
             {% if player_list %}
             {% for player in player_list %}
             <div class="card">
+<<<<<<< HEAD
                 <div class="content">
                     <div class="center aligned header">
+=======
+                <div class="image">
+                    <img src="{{ player.email|gravatar_url:300 }}">
+                </div>
+                <div class="content">
+                    <div class="header">
+>>>>>>> Adding Django app files
                         <a href="{% url 'player-profile' player.pk %}" class="ui link">{{ player.get_short_name }}</a>
                     </div>
                 </div>
                 <div class="extra content">
+<<<<<<< HEAD
                     <div class="ui two column center aligned grid">
 
                         <div class="column">
@@ -73,6 +86,24 @@
                                 Loss{{ player.num_games_lost|pluralize:"es" }}
                                 </div>
                             </div>
+=======
+                    <h5 class="ui horizontal divider header">
+                        <i class="gamepad icon"></i>
+                        Quick Statistics
+                    </h5>
+                    <div class="ui list">
+                        <div class="item">
+                            {{ player.num_games_played }} game{{ player.num_games_played|pluralize }} played
+                        </div>
+                        <div class="item">
+                            {{ player.num_games_won }} game{{ player.num_games_won|pluralize }} won
+                        </div>
+                        <div class="item">
+                            {{ player.num_games_lost }} game{{ player.num_games_lost|pluralize }} lost
+                        </div>
+                        <div class="item">
+                            Win/loss of {{ player.win_loss_per }}
+>>>>>>> Adding Django app files
                         </div>
                     </div>
                 </div>

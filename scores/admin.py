@@ -70,7 +70,11 @@ class PlayerAdmin(BaseUserAdmin):
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
     list_display = ('first_name', 'last_name', 'email', 'is_active')
+<<<<<<< HEAD
     list_display_links = ('first_name', 'last_name', 'email')
+=======
+    list_display_links = ('first_name', 'last_name')
+>>>>>>> Adding Django app files
     list_filter = ('is_active', )
     fieldsets = (
         (None, {'fields': (('first_name', 'last_name'), ('email', 'password'), )}),
@@ -108,9 +112,15 @@ class LocationAdmin(BaseAdmin):
 
 @admin.register(Edition)
 class EditionAdmin(BaseAdmin):
+<<<<<<< HEAD
     fields = (('name', 'game_type', 'image_tag', 'rules_url', 'skills'), ('description'),
               ('max_players', 'duration', 'points'))
     list_display = ('name', 'game_type', 'image_tag', 'max_players', 'duration', 'points', 'times_played')
+=======
+    fields = (('name', 'game_type'), ('description'),
+              ('max_players', 'duration', 'points'))
+    list_display = ('name', 'game_type', 'max_players', 'duration', 'points', 'times_played')
+>>>>>>> Adding Django app files
     exclude = ('is_active', )
 
     def times_played(self, obj):
@@ -128,12 +138,20 @@ class ScoresheetInline(admin.TabularInline):
 class ScoresheetAdmin(BaseAdmin):
     fieldsets = (
         (None, {
+<<<<<<< HEAD
             'fields': (('game', 'player', 'color', 'start_position'), )
+=======
+            'fields': (('game', 'player', 'color', 'starting_position'), )
+>>>>>>> Adding Django app files
         }),
         ('Point tracking', {
             'fields': ('total_points', ('num_settlements', 'num_cities'),
                        ('num_vpcards', 'num_chits'),
+<<<<<<< HEAD
                        ('longest_road', 'largest_army', 'merchant', 'harbormaster'),
+=======
+                       ('longest_road', 'largest_army', 'merchant'),
+>>>>>>> Adding Django app files
                        ('metro_science', 'metro_politics', 'metro_trade')
             )
         }),
