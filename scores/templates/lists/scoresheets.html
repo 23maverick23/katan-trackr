@@ -33,16 +33,11 @@
             {% for scoresheet in scoresheets %}
             <tr {% if scoresheet.player == scoresheet.game.winning_scoresheet.player %}class="positive"{% endif %}>
                 <td>
-<<<<<<< HEAD
                     <h5 class="ui {% if scoresheet.player == scoresheet.game.winning_scoresheet.player %}green{% endif %} header">
                         {% if scoresheet.player == scoresheet.game.winning_scoresheet.player %} <i class="trophy icon"></i>{% endif %}
                         <div class="content">
                             ({{ scoresheet.game.get_formatted_number }}) {{ scoresheet.game.get_display_name }}
                         </div>
-=======
-                    <h5 class="ui header">
-                        ({{ scoresheet.game.get_formatted_number }}) {{ scoresheet.game.get_display_name }}
->>>>>>> Adding Django app files
                         <div class="sub header">
                             <a href="{% url 'game-scoresheets' scoresheet.game.pk %}">Played for {{ scoresheet.game.get_duration|naturaldelta_duration }} ({{ scoresheet.game.date_start|naturaltime }})</a>
                         </div>
@@ -84,10 +79,7 @@
                     {% if scoresheet.metro_politics %}<span data-inverted="" data-tooltip="Politics Metropolis"><span class="ui blue empty circular label"></span></span>{% endif %}
                     {% if scoresheet.metro_trade %}<span data-inverted="" data-tooltip="Trade Metropolis"><span class="ui yellow empty circular label"></span></span>{% endif %}
                     {% if scoresheet.merchant %}<span data-inverted="" data-tooltip="Merchant"><span class="ui purple empty circular label"></span></span>{% endif %}
-<<<<<<< HEAD
                     {% if scoresheet.harbormaster %}<span data-inverted="" data-tooltip="Harbormaster"><span class="ui grey empty circular label"></span></span>{% endif %}
-=======
->>>>>>> Adding Django app files
                 </td>
             </tr>
             {% endfor %}

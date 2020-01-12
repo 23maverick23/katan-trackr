@@ -1,8 +1,5 @@
 {% extends "site/base.html" %}
-<<<<<<< HEAD
 {% load static %}
-=======
->>>>>>> Adding Django app files
 {% load humanize %}
 {% load timing %}
 
@@ -40,7 +37,6 @@
                 </td>
                 <td>
                     <h5 class="ui header">
-<<<<<<< HEAD
                         {% if game.edition.image_tag %}
                             {% with 'scores/images/box_icon_'|add:game.edition.image_tag|add:'.png' as image_static %}
                             <img class="ui middle aligned image" src="{% static image_static %}">
@@ -52,10 +48,6 @@
                             {{ game.edition }}
                             <div class="sub header">{{ game.edition.short_description }}</div>
                         </div>
-=======
-                        {{ game.edition }}
-                        <div class="sub header">{{ game.edition.short_description }}</div>
->>>>>>> Adding Django app files
                     </h5>
                 </td>
                 <td>

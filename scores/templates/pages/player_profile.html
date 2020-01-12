@@ -1,8 +1,5 @@
 {% extends "site/base.html" %}
-<<<<<<< HEAD
-=======
-{% load gravatar %}
->>>>>>> Adding Django app files
+
 {% load humanize %}
 {% load timing %}
 
@@ -21,10 +18,6 @@
     <div class="four wide column">
         <div class="ui one column center aligned grid">
             <div class="column">
-<<<<<<< HEAD
-=======
-                <img class="ui centered medium circular image" src="{{ player.email|gravatar_url:300 }}">
->>>>>>> Adding Django app files
                 <div class="ui huge center aligned header">
                     <div class="content">
                     {{ player.get_full_name }}
@@ -38,36 +31,15 @@
                     <div id="chart-last-five" style="width:100%; height:100px;"></div>
                 </div>
             </div>
-<<<<<<< HEAD
 
-=======
-        </div>
-    </div>
-
-    <div class="twelve wide column">
-        <h4 class="ui horizontal divider header">
-            <i class="quidditch icon"></i>
-            Game Statistics
-        </h4>
-
-        <div class="ui three column center aligned stackable grid">
-            
->>>>>>> Adding Django app files
             <div class="column">
                 <div class="ui segment">
                     <div class="ui statistic">
                         <div class="value">
-<<<<<<< HEAD
                         {{ statistics.highest_score }}
                         </div>
                         <div class="label">
                         Highest Score
-=======
-                        {{ player.num_games_played }}
-                        </div>
-                        <div class="label">
-                        Games Played
->>>>>>> Adding Django app files
                         </div>
                     </div>
                 </div>
@@ -77,17 +49,10 @@
                 <div class="ui segment">
                     <div class="ui statistic">
                         <div class="value">
-<<<<<<< HEAD
                         {{ statistics.lowest_score }}
                         </div>
                         <div class="label">
                         Lowest Score
-=======
-                        {{ player.num_games_won }}
-                        </div>
-                        <div class="label">
-                        Games Won
->>>>>>> Adding Django app files
                         </div>
                     </div>
                 </div>
@@ -97,17 +62,10 @@
                 <div class="ui segment">
                     <div class="ui statistic">
                         <div class="value">
-<<<<<<< HEAD
                         {{ statistics.average_score|floatformat:"0" }}
                         </div>
                         <div class="label">
                         Average Score
-=======
-                        {{ player.win_loss_per }}
-                        </div>
-                        <div class="label">
-                        Win Percentage
->>>>>>> Adding Django app files
                         </div>
                     </div>
                 </div>
@@ -154,7 +112,6 @@
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
 
         </div>
     </div>
@@ -222,11 +179,6 @@
         </div>
 
         <div class="ui one column center aligned stackable grid segment">
-=======
-        </div>
-
-        <div class="ui four column center aligned stackable grid segment">
->>>>>>> Adding Django app files
 
             <div class="sixteen wide column">
                 <div class="ui container">
@@ -235,7 +187,6 @@
             </div>
 
         </div>
-<<<<<<< HEAD
 
         <h4 class="ui horizontal divider header">
             <i class="table icon"></i>
@@ -342,8 +293,6 @@
             {% endif %}
         </div>
 
-=======
->>>>>>> Adding Django app files
     </div>
 </div>
 {% endblock %}
@@ -354,22 +303,14 @@
     $(function() {
         $(document)
             .ready(function() {
-<<<<<<< HEAD
 
                 $('table.sortable').tablesort();
-
-=======
->>>>>>> Adding Django app files
                 var lastFiveChart = Highcharts.chart('chart-last-five', {
                     chart: {
                         type: 'column'
                     },
                     title: {
-<<<<<<< HEAD
                         text: 'Last {% if last_five|length > 1 %}{{ last_five|length }} {% endif %}Game{{ last_five|pluralize }}'
-=======
-                        text: 'Last {{ last_five|length }} Games'
->>>>>>> Adding Django app files
                     },
                     xAxis: {
                         lineWidth: 0,

@@ -7,11 +7,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils import timezone
 
-<<<<<<< HEAD
 from .managers import OrderedEditionManager
-
-=======
->>>>>>> Adding Django app files
 
 class UserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
@@ -136,23 +132,16 @@ class Location(BaseModel):
 
 
 class Edition(BaseModel):
-<<<<<<< HEAD
     TWO = '24'
     FOUR = '34'
     SIX = '56'
     EDITION_PLAYERS = [
         (TWO, '2-4'),
-=======
-    FOUR = '34'
-    SIX = '56'
-    EDITION_PLAYERS = [
->>>>>>> Adding Django app files
         (FOUR, '3-4'),
         (SIX, '5-6')
     ]
     BASE = 'B'
     EXPANSION = 'E'
-<<<<<<< HEAD
     COMBO = 'M'
     EDITION_TYPE = [
         (BASE, 'Base Game'),
@@ -160,13 +149,6 @@ class Edition(BaseModel):
         (COMBO, 'Expansion Combination')
     ]
     name = models.CharField("edition's nickname", max_length=75, blank=False, null=False)
-=======
-    EDITION_TYPE = [
-        (BASE, 'Base Game'),
-        (EXPANSION, 'Expansion')
-    ]
-    name = models.CharField("edition's nickname", max_length=30, blank=False, null=False)
->>>>>>> Adding Django app files
     description = models.TextField("description", blank=False, null=False)
     game_type = models.CharField("edition type", max_length=1, choices=EDITION_TYPE, default=BASE,
                                  blank=False, null=False)
@@ -174,7 +156,6 @@ class Edition(BaseModel):
                                    default=FOUR, blank=False, null=False)
     duration = models.CharField("duration", max_length=30, blank=False, null=False)
     points = models.IntegerField("VPs to win", blank=False, null=False)
-<<<<<<< HEAD
     image_tag = models.CharField("image tag", max_length=30, blank=True, null=True)
     skills = models.TextField("skills", blank=True, null=True)
     rules_url = models.URLField("rules url", blank=True, null=True)
@@ -184,11 +165,6 @@ class Edition(BaseModel):
 
     objects = models.Manager()
     ordered_objects = OrderedEditionManager()
-=======
-
-    class Meta:
-        ordering = ('game_type', 'name', )
->>>>>>> Adding Django app files
 
     def __str__(self):
         return "{} ({})".format(self.name, self.get_game_type_display())
@@ -255,14 +231,9 @@ class Game(BaseModel):
         )
 
     def get_display_name(self):
-<<<<<<< HEAD
         tz_date_start = timezone.localtime(self.date_start)
         game_str = "{} {}".format(
             tz_date_start.strftime('%A'), self.get_time_of_day().capitalize()
-=======
-        game_str = "{} {}".format(
-            self.date_start.strftime('%A'), self.get_time_of_day().capitalize()
->>>>>>> Adding Django app files
         )
         return game_str
 
@@ -312,10 +283,8 @@ class Scoresheet(BaseModel):
     metro_politics = models.BooleanField("politics metropolis", default=False, blank=False)
     metro_trade = models.BooleanField("trade metropolis", default=False, blank=False)
     merchant = models.BooleanField("merchant VP", default=False, blank=False)
-<<<<<<< HEAD
     harbormaster = models.BooleanField("harbormaster VP", default=False, blank=False)
-=======
->>>>>>> Adding Django app files
+
 
     class Meta:
         ordering = ('-total_points', )
