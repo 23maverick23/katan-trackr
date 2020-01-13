@@ -1,7 +1,7 @@
 katan_trackr
 ============
 
-A Django web app for tracking games played in Catan.
+A Django web app for tracking Settlers of Catan game play.
 
 ## Development
 

@@ -1,0 +1,31 @@
+{
+  "name": "Katan Trackr",
+  "short_name": "Katan Trackr",
+  "start_url": "https://katantrackr.rymo.io/statistics/",
+  "theme_color": "#545454",
+  "orientation": "portrait-primary",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "A Django web app for tracking Settlers of Catan game play.",
+  "icons": [{
+    "src": "/static/scores/images/favicon-32.png",
+    "sizes": "32x32",
+    "type": "image/png"
+  }, {
+    "src": "/static/scores/images/favicon-128.png",
+    "sizes": "128x128",
+    "type": "image/png"
+  }, {
+    "src": "/static/scores/images/favicon-192.png",
+    "sizes": "192x192",
+    "type": "image/png"
+  }, {
+    "src": "/static/scores/images/logo.png",
+    "sizes": "400x400",
+    "type": "image/png"
+  }, {
+    "src": "/static/scores/images/logo_large.png",
+    "sizes": "900x900",
+    "type": "image/png"
+  }]
+}

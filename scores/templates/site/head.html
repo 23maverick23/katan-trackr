@@ -9,6 +9,48 @@
 <link rel="icon" href="{% static 'scores/images/favicon-32.png' %}" sizes="32x32">
 <link rel="icon" href="{% static 'scores/images/favicon-128.png' %}" sizes="128x128">
 <link rel="icon" href="{% static 'scores/images/favicon-192.png' %}" sizes="192x192">
+<link rel="apple-touch-icon" href="{% static 'scores/images/favicon-192.png' %}">
+
+<!-- Webapp -->
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Katan Trackr">
+<meta name="apple-mobile-web-app-orientations" content="portrait-any">
+<link rel="apple-touch-startup-image" href="{% static 'scores/images/logo-large.png' %}">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="address=no">
+
+<!-- Use this to mimic standalone app links. Note: it breaks the nav in portrait... -->
+<script type="text/javascript">
+    (function(document,navigator,standalone) {
+        // prevents links from apps from oppening in mobile safari
+        // this javascript must be the first script in your <head>
+        if ((standalone in navigator) && navigator[standalone]) {
+            var curnode, location=document.location, stop=/^(a|html)$/i;
+            document.addEventListener('click', function(e) {
+                curnode=e.target;
+                while (!(stop).test(curnode.nodeName)) {
+                    curnode=curnode.parentNode;
+                }
+                // Condidions to do this only on links to your own app
+                // if you want all links, use if('href' in curnode) instead.
+                
+                if (
+                   'href' in curnode &&                                            // is a link
+                   curnode.className.indexOf('toc')===-1 &&                        // is not a mobile pusher menu link
+                   (chref=curnode.href).replace(location.href, '').indexOf('#') && // is not an anchor
+                   (    !(/^[a-z\+\.\-]+:/i).test(chref) ||                        // either does not have a proper scheme (relative links)
+                        chref.indexOf(location.protocol+'//'+location.host)===0    // or is in the same protocol and domain 
+                    )
+                ) {
+                    e.preventDefault();
+                    location.href = curnode.href;
+                }
+            },false);
+        }
+    })(document,window.navigator,'standalone');
+</script>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.css" integrity="sha256-QVBN0oT74UhpCtEo4Ko+k3sNo+ykJFBBtGduw13V9vw=" crossorigin="anonymous" />
 <link rel="stylesheet" href="{% static 'scores/css/main.css' %}">
