@@ -37,7 +37,7 @@ def statistics_page(request):
 
 
     ordered_wins = games_played.order_by('-date_start')
-    last_win = ordered_wins[0]
+    last_win = [] if not ordered_wins or len(ordered_wins) == 0 else ordered_wins[0]
 
     ordered_wins_players = ordered_wins.values('winning_scoresheet__player__first_name')
     ordered_wins_players_names = [game['winning_scoresheet__player__first_name'] for game in ordered_wins_players]
@@ -59,6 +59,10 @@ def statistics_page(request):
                                       .values('winning_scoresheet__player__first_name') \
                                       .annotate(num_wins=Count('pk')) \
                                       .order_by('-num_wins')
+
+    most_wins_start_position = games_played.values('winning_scoresheet__start_position') \
+                                           .annotate(num_wins=Count('winning_scoresheet__start_position')) \
+                                           .order_by('-num_wins')
 
     editions_played = games_played.values('edition__name') \
                                   .annotate(num_editions=Count('edition')) \
@@ -161,6 +165,8 @@ def statistics_page(request):
         "current_win_streak": current_win_streak,
         "most_wins_year": most_wins_year,
         "most_wins_last_year": most_wins_last_year,
+
+        "most_wins_start_position": most_wins_start_position,
 
         "editions_played": editions_played,
 

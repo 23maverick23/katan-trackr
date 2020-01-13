@@ -151,7 +151,11 @@
                             <br />Won By
                         </div>
                         <div class="text value">
+                            {% if last_win.length == 0 %}
+                            N/A
+                            {% else %}
                             {{ last_win.winning_scoresheet.player.first_name }}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -292,6 +296,25 @@
                         </div>
                         <div class="label">
                             Average Score
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inverted -->
+            
+            <div class="column">
+                <div class="ui inverted segment">
+                    <div class="ui inverted statistic">
+                        <div class="value">
+                            {% if most_wins_start_position|length == 0 %}
+                            N/A
+                            {% else %}
+                            {{ most_wins_start_position.0.winning_scoresheet__start_position|ordinal }}
+                            {% endif %}
+                        </div>
+                        <div class="label">
+                            Most Winning Start Position
                         </div>
                     </div>
                 </div>
