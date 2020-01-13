@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.forms.models import BaseInlineFormSet
 from django.shortcuts import get_object_or_404
 from django.utils.safestring import mark_safe
 
@@ -118,10 +119,21 @@ class EditionAdmin(BaseAdmin):
     times_played.short_description = '# of games played'
 
 
+class ScoresheetInlineFormSet(BaseInlineFormSet):
+    def __init__(self, *args, **kwargs):
+        # Provide initial data to the inline form for starting position
+        kwargs.update({'initial': [
+            { 'start_position': 1, }, {'start_position': 2, }, {'start_position': 3, }, {'start_position': 4, }
+        ]})
+        super(ScoresheetInlineFormSet, self).__init__(*args, **kwargs)
+
+
 class ScoresheetInline(admin.TabularInline):
     model = Scoresheet
-    extra = 1
+    min_num = 4
+    extra = 0
     exclude = ('is_active', )
+    formset = ScoresheetInlineFormSet
 
 
 @admin.register(Scoresheet)
@@ -130,12 +142,22 @@ class ScoresheetAdmin(BaseAdmin):
         (None, {
             'fields': (('game', 'player', 'color', 'start_position'), )
         }),
-        ('Point tracking', {
-            'fields': ('total_points', ('num_settlements', 'num_cities'),
-                       ('num_vpcards', 'num_chits'),
-                       ('longest_road', 'largest_army', 'merchant', 'harbormaster'),
-                       ('metro_science', 'metro_politics', 'metro_trade')
-            )
+        ('Base Game', {
+            'fields': ('total_points',
+                       ('num_settlements', 'num_cities', 'num_vpcards', ),
+                       ('longest_road', 'largest_army', ),
+                      )
+        }),
+        ('Seafarers', {
+            'fields': ('num_chits', ),
+        }),
+        ('Cities & Knights', {
+            'fields': (
+                       ('metro_science', 'metro_politics', 'metro_trade', 'merchant', ),
+                      )
+        }),
+        ('Traders & Barbarians', {
+            'fields': ('harbormaster', ),
         }),
     )
     list_display = ('game', 'edition_playd', 'player', 'color', 'total_points')
