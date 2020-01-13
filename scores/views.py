@@ -276,11 +276,15 @@ def player_profile_page(request, player):
                                    .annotate(mc=Count('color')) \
                                    .order_by('-mc')
 
-    wins_by_color = Game.objects.filter(is_active=True) \
-                                .filter(winning_scoresheet__player=player.pk) \
+    active_games = Game.objects.filter(is_active=True)
+    wins_by_color = active_games.filter(winning_scoresheet__player=player.pk) \
                                 .values('winning_scoresheet__color') \
                                 .annotate(mc=Count('winning_scoresheet__color')) \
                                 .order_by('-mc')
+
+    most_common_start_position = scoresheets.values('start_position') \
+                                            .annotate(mc=Count('start_position')) \
+                                            .order_by('-mc')
 
     color_names = dict(Scoresheet.PLAYER_COLORS)
     most_common_color = color_names[games_by_color[0]['color']]
@@ -307,6 +311,7 @@ def player_profile_page(request, player):
         "other_edition_avg_list": other_edition_avg_list,
         "most_common_color": most_common_color,
         "most_winning_color": most_winning_color,
+        "most_common_start_position": most_common_start_position,
         "players_active": "active"
     }
     return render(request, template, context)

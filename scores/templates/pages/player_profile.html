@@ -113,6 +113,24 @@
                 </div>
             </div>
 
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="label">
+                            Most Common
+                            <br />Start Position
+                        </div>
+                        <div class="text value">
+                            {% if most_common_start_position|length == 0 %}
+                            N/A
+                            {% else %}
+                            {{ most_common_start_position.0.start_position|ordinal }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
