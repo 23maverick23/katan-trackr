@@ -130,8 +130,8 @@ class ScoresheetInlineFormSet(BaseInlineFormSet):
 
 class ScoresheetInline(admin.TabularInline):
     model = Scoresheet
-    min_num = 4
-    extra = 0
+    max_num = 4
+    extra = 4
     exclude = ('is_active', )
     formset = ScoresheetInlineFormSet
 
