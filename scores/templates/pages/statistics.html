@@ -151,11 +151,7 @@
                             <br />Won By
                         </div>
                         <div class="text value">
-                            {% if last_win|length == 0 %}
-                            N/A
-                            {% else %}
                             {{ last_win.winning_scoresheet.player.first_name }}
-                            {% endif %}
                         </div>
                     </div>
                 </div>

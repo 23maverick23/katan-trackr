@@ -37,7 +37,8 @@ def statistics_page(request):
 
 
     ordered_wins = games_played.order_by('-date_start')
-    last_win = [] if not ordered_wins else ordered_wins[0]
+    ordered_wins_not_null = ordered_wins.exclude(winning_scoresheet__isnull=True)
+    last_win = ordered_wins_not_null[0]
 
     ordered_wins_players = ordered_wins.values('winning_scoresheet__player__first_name')
     ordered_wins_players_names = [game['winning_scoresheet__player__first_name'] for game in ordered_wins_players]
