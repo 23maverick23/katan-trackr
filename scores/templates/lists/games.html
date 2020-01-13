@@ -32,7 +32,7 @@
                 <td class="single line">
                     <h5 class="ui header">
                         ({{ game.get_formatted_number }}) {{ game.get_display_name }}
-                        <div class="sub header">Played for {{ game.get_duration|naturaldelta_duration }} ({{ game.date_start|naturaltime }})</div>
+                        <div class="sub header">Played for {{ game.get_duration|naturaldelta_duration }} ({{ game.date_finish|naturaltime }})</div>
                     </h5>
                 </td>
                 <td>

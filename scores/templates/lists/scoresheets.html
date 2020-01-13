@@ -39,7 +39,7 @@
                             ({{ scoresheet.game.get_formatted_number }}) {{ scoresheet.game.get_display_name }}
                         </div>
                         <div class="sub header">
-                            <a href="{% url 'game-scoresheets' scoresheet.game.pk %}">Played for {{ scoresheet.game.get_duration|naturaldelta_duration }} ({{ scoresheet.game.date_start|naturaltime }})</a>
+                            <a href="{% url 'game-scoresheets' scoresheet.game.pk %}">Played for {{ scoresheet.game.get_duration|naturaldelta_duration }} ({{ scoresheet.game.date_finish|naturaltime }})</a>
                         </div>
                         <div class="sub header">{{ scoresheet.game.edition }}</div>
                     </h5>
