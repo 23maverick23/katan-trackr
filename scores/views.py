@@ -84,14 +84,21 @@ def statistics_page(request):
                                                 ) \
                                                .values('player__first_name') \
                                                .annotate( \
-                                                    num_times=Case( \
+                                                    num_times=Sum(Case( \
                                                         When(Q(metro_science=True) & Q(metro_politics=True) & Q(metro_trade=True), then=Value(3)), \
-                                                        When(Q(metro_science=True) & Q(metro_politics=True) | Q(metro_science=True) & Q(metro_trade=True) | Q(metro_politics=True) & Q(metro_trade=True), then=Value(2)), \
-                                                        When(Q(metro_science=True) | Q(metro_politics=True) | Q(metro_trade=True), then=Value(1)), \
+
+                                                        When(Q(metro_science=True) & Q(metro_politics=True) & Q(metro_trade=False), then=Value(2)), \
+                                                        When(Q(metro_science=True) & Q(metro_politics=False) & Q(metro_trade=True), then=Value(2)), \
+                                                        When(Q(metro_science=False) & Q(metro_politics=True) & Q(metro_trade=True), then=Value(2)), \
+
+                                                        When(Q(metro_science=True) & Q(metro_politics=False) & Q(metro_trade=False), then=Value(1)), \
+                                                        When(Q(metro_science=False) & Q(metro_politics=True) & Q(metro_trade=False), then=Value(1)), \
+                                                        When(Q(metro_science=False) & Q(metro_politics=False) & Q(metro_trade=True), then=Value(1)), \
+
                                                         default=Value(0), \
                                                         output_field=IntegerField() \
                                                         ) \
-                                                    ) \
+                                                    )) \
                                                .order_by('-num_times')
 
     scoresheets_points = scoresheets.aggregate(
