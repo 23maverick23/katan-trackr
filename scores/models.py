@@ -256,6 +256,7 @@ class Scoresheet(BaseModel):
     GREEN = 'GR'
     BROWN = 'BR'
     PINK = 'PK'
+    YELLOW = 'YL'
     PLAYER_COLORS = [
         (RED, 'Red'),
         (BLUE, 'Blue'),
@@ -264,6 +265,7 @@ class Scoresheet(BaseModel):
         (GREEN, 'Green'),
         (BROWN, 'Brown'),
         (PINK, 'Pink'),
+        (YELLOW, 'Yellow')
     ]
 
     game = models.ForeignKey(Game, on_delete=models.CASCADE, blank=False)
