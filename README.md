@@ -1,4 +1,4 @@
-![Katan Trackr - Let's Settle This](https://raw.githubusercontent.com/23maverick23/katan-trackr/master/scores/static/scores/images/logo_large.png
+![Katan Trackr - Let's Settle This](https://raw.githubusercontent.com/23maverick23/katan-trackr/master/scores/static/scores/images/logo_large.png)
 
 A Django web app for tracking Settlers of Catan game play.
 
