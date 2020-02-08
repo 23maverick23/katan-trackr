@@ -1,13 +1,17 @@
 from django.db.models import (Q, Count, Min, Max, Avg, Sum, F, Func, ExpressionWrapper, fields,
                               Case, Value, When, IntegerField)
-from django.db.models.functions import Lower, Length
+from django.db.models.functions import (Lower, Length, Extract)
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import (render, get_object_or_404)
 
-from datetime import date, timedelta
+from datetime import (date, timedelta)
 
 from .models import (Player, Game, Edition, Location, Scoresheet)
+
+
+def to_django_weekday(date):
+    return (date.isoweekday() % 7) + 1
 
 
 def landing_page(request):
@@ -64,6 +68,10 @@ def statistics_page(request):
     most_wins_start_position = games_played.values('winning_scoresheet__start_position') \
                                            .annotate(num_wins=Count('winning_scoresheet__start_position')) \
                                            .order_by('-num_wins')
+
+    day_of_week = games_played.values('date_start__week_day') \
+                              .annotate(count=Count('date_start__week_day')) \
+                              .order_by('-count')
 
     editions_played = games_played.values('edition__name') \
                                   .annotate(num_editions=Count('edition')) \
@@ -170,6 +178,7 @@ def statistics_page(request):
         "most_wins_start_position": most_wins_start_position,
 
         "editions_played": editions_played,
+        "day_of_week": day_of_week,
 
         "scoresheets_most_settlements": scoresheets_most_settlements,
         "scoresheets_most_cities": scoresheets_most_cities,

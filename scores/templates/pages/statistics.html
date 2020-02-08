@@ -107,6 +107,23 @@
             <div class="column">
                 <div class="ui segment">
                     <div class="ui statistic">
+                        <div class="label">
+                            Favorite Day to Play
+                        </div>
+                        <div class="text value">
+                            {% if day_of_week|length == 0 %}
+                            N/A
+                            {% else %}
+                            {{ day_of_week.0.date_start__week_day|day_of_week_name }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
                         <div class="value">
                             {{ editions_played|length }}
                         </div>

@@ -63,3 +63,9 @@ def naturaldelta_days_short(timedelta):
             return ungettext("%dh", "%dh", hours) % hours
     else:
         return ungettext("%dd", "%dd", days) % days
+
+@register.filter
+def day_of_week_name(int):
+    """Converts a Django day of week int to a string"""
+    days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    return days[int-1]  # Django week_day uses Sunday as 1, so correct for 0 based lists
