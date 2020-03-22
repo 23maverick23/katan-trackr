@@ -305,7 +305,7 @@ def player_profile_page(request, player):
     else:
         most_winning_color = color_names[wins_by_color[0]['winning_scoresheet__color']]
 
-    paginator = Paginator(scoresheets, 5)
+    paginator = Paginator(scoresheets, 6)
     page = request.GET.get('page')
     player_scoresheets = paginator.get_page(page)
 
@@ -329,7 +329,7 @@ def player_profile_page(request, player):
 
 def game_list(request):
     active_games = Game.objects.filter(is_active=True).order_by('-number')
-    paginator = Paginator(active_games, 5)
+    paginator = Paginator(active_games, 6)
     page = request.GET.get('page')
     games = paginator.get_page(page)
 
@@ -350,7 +350,7 @@ def scoresheet_list(request, game=None):
 
     active_scoresheets = active_scoresheets.order_by('-game__number', '-total_points')
 
-    paginator = Paginator(active_scoresheets, 5)
+    paginator = Paginator(active_scoresheets, 12)
     page = request.GET.get('page')
     scoresheets = paginator.get_page(page)
 
