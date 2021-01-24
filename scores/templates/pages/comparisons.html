@@ -1,0 +1,71 @@
+{% extends "site/base.html" %}
+{% load humanize %}
+{% load timing %}
+
+{% block title %}
+{{ block.super }} | Comparisons
+{% endblock %}
+
+{% block mobile_title %}
+{{ block.super }} | Comparisons
+{% endblock %}
+
+{% block content %}
+{{ block.super }}
+
+<div class="ui xtrapadded stackable relaxed grid container">
+
+    <div class="sixteen wide column">
+        <h4 class="ui horizontal divider header">
+            <i class="quidditch icon"></i>
+            Game Comparisons - To Be Added
+        </h4>
+
+        {% comment %}
+        <div class="ui stackable three column center aligned grid">
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                            {{ games_played_year }}
+                        </div>
+                        <div class="label">
+                            Game{{ games_played_year|pluralize }} This Year
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                            {{ games_played_this_month }}
+                        </div>
+                        <div class="label">
+                            Game{{ games_played_this_month|pluralize }} This Month
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui statistic">
+                        <div class="value">
+                            {{ games_played_last_month }}
+                        </div>
+                        <div class="label">
+                            Game{{ games_played_last_month|pluralize }} Last Month
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+        {% endcomment %}
+
+    </div>
+</div>
+{% endblock %}

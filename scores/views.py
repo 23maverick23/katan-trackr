@@ -26,8 +26,8 @@ def statistics_page(request):
 
     games_played = Game.objects.filter(is_active=True)
     games_played_year = games_played.filter(date_start__year=today.year).count()
-    games_played_this_month = games_played.filter(date_start__month=today.month).count()
-    games_played_last_month = games_played.filter(date_start__month=today.month-1).count()
+    games_played_this_month = games_played.filter(date_start__month=today.month, date_start__year=today.year).count()
+    games_played_last_month = games_played.filter(date_start__month=today.month-1, date_start__year=today.year).count()
 
     # Example: add new field 'duration' to queryset
     # Note: this is no longer needed as 'duration' was added to the model
@@ -198,6 +198,26 @@ def statistics_page(request):
         "most_chits": most_chits,
 
         "statistics_active": "active"
+    }
+    return render(request, template, context)
+
+
+def comparisons_page(request):
+    today = date.today()
+    today_last_year = date.today()-timedelta(days=365)
+
+    games_played = Game.objects.filter(is_active=True)
+    games_played_year = games_played.filter(date_start__year=today.year).count()
+    games_played_this_month = games_played.filter(date_start__month=today.month, date_start__year=today.year).count()
+    games_played_last_month = games_played.filter(date_start__month=today.month-1, date_start__year=today.year).count()
+
+    template = 'pages/comparisons.html'
+    context = {
+        "games_played_year": games_played_year,
+        "games_played_this_month": games_played_this_month,
+        "games_played_last_month": games_played_last_month,
+
+        "comparisons_active": "active"
     }
     return render(request, template, context)
 

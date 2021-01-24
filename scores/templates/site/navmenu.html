@@ -5,6 +5,7 @@
     <div class="ui container">
         <a href="{% url 'home' %}" class="header item {{ home_active }}">Home</a>
         <a href="{% url 'statistics' %}" class="item {{ statistics_active }}">Statistics</a>
+        <a href="{% url 'comparisons' %}" class="item {{ comparisons_active }}">Comparisons</a>
         <a href="{% url 'games' %}" class="item {{ games_active }}">Games</a>
         <a href="{% url 'scoresheets' %}" class="item {{ scoresheets_active }}">Scoresheets</a>
         <a href="{% url 'players' %}" class="item {{ players_active }}">Players</a>
@@ -26,6 +27,7 @@
 <div class="ui vertical inverted sidebar menu">
     <a href="{% url 'home' %}" class="header item {{ home_active }}">Home</a>
     <a href="{% url 'statistics' %}" class="item {{ statistics_active }}">Statistics</a>
+    <a href="{% url 'comparisons' %}" class="item {{ comparisons_active }}">Comparisons</a>
     <a href="{% url 'games' %}" class="item {{ games_active }}">Games</a>
     <a href="{% url 'scoresheets' %}" class="item {{ scoresheets_active }}">Scoresheets</a>
     <a href="{% url 'players' %}" class="item {{ players_active }}">Players</a>
