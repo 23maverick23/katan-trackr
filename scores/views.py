@@ -4,6 +4,7 @@ from django.db.models.functions import (Lower, Length, Extract)
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import (render, get_object_or_404)
+from django.utils import timezone
 
 from datetime import (date, timedelta)
 
@@ -21,8 +22,8 @@ def landing_page(request):
 
 
 def statistics_page(request):
-    today = date.today()
-    today_last_year = date.today()-timedelta(days=365)
+    today = timezone.now()
+    today_last_year = timezone.now()-timedelta(days=365)
 
     games_played = Game.objects.filter(is_active=True)
     games_played_year = games_played.filter(date_start__year=today.year).count()
@@ -203,19 +204,53 @@ def statistics_page(request):
 
 
 def comparisons_page(request):
-    today = date.today()
-    today_last_year = date.today()-timedelta(days=365)
+    today = timezone.now()
+    today_last_year = timezone.now()-timedelta(days=365)
 
     games_played = Game.objects.filter(is_active=True)
-    games_played_year = games_played.filter(date_start__year=today.year).count()
-    games_played_this_month = games_played.filter(date_start__month=today.month, date_start__year=today.year).count()
-    games_played_last_month = games_played.filter(date_start__month=today.month-1, date_start__year=today.year).count()
+    games_played_this_year = games_played.filter(date_start__year=today.year).count()
+    games_played_last_year = games_played.filter(date_start__year=today_last_year.year).count()
+    
+    games_played_last_year_to_date = games_played.filter(date_start__year=today_last_year.year, date_start__lte=today_last_year).count()
+
+    games_played_to_date_diff = games_played_this_year - games_played_last_year_to_date
+    games_played_to_date_diff_per = (games_played_to_date_diff / games_played_last_year_to_date) * 100
+
+    wins_this_year = games_played.filter(date_start__year=today.year) \
+                                 .values('winning_scoresheet__player__first_name') \
+                                 .annotate(num_wins=Count('pk')) \
+                                 .order_by('-num_wins')
+
+    wins_last_year = games_played.filter(date_start__year=today_last_year.year) \
+                                      .values('winning_scoresheet__player__first_name') \
+                                      .annotate(num_wins=Count('pk')) \
+                                      .order_by('-num_wins')
+
+    wins_last_year_to_date = games_played.filter(date_start__year=today_last_year.year, date_start__lte=today_last_year) \
+                                      .values('winning_scoresheet__player__first_name') \
+                                      .annotate(num_wins=Count('pk')) \
+                                      .order_by('-num_wins')
+
+    wins_last_year_dict = {winner['winning_scoresheet__player__first_name']:[winner['num_wins']] for winner in wins_last_year}
+    wins_last_year_to_date_dict = {winner['winning_scoresheet__player__first_name']:winner['num_wins'] for winner in wins_last_year_to_date}
+    wins_this_year_dict = {winner['winning_scoresheet__player__first_name']:winner['num_wins'] for winner in wins_this_year}
+
+    for key, value in wins_last_year_dict.items():
+        wins_last_year_dict[key].append(wins_this_year_dict.get(key, 0))
+        wins_last_year_dict[key].append(wins_last_year_to_date_dict.get(key, 0))
+
+        diff_per = wins_this_year_dict.get(key, 0) * 100 if wins_last_year_to_date_dict.get(key, 0) == 0 else ((wins_this_year_dict.get(key, 0) - wins_last_year_to_date_dict.get(key, 0)) / wins_last_year_to_date_dict.get(key, 0)) * 100
+        wins_last_year_dict[key].append(diff_per)
+
 
     template = 'pages/comparisons.html'
     context = {
-        "games_played_year": games_played_year,
-        "games_played_this_month": games_played_this_month,
-        "games_played_last_month": games_played_last_month,
+        "games_played_this_year": games_played_this_year,
+        "games_played_last_year": games_played_last_year,
+        "games_played_last_year_to_date": games_played_last_year_to_date,
+        "games_played_to_date_diff_per": games_played_to_date_diff_per,
+
+        "wins_last_year_dict": wins_last_year_dict,
 
         "comparisons_active": "active"
     }

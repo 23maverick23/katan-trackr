@@ -18,53 +18,46 @@
     <div class="sixteen wide column">
         <h4 class="ui horizontal divider header">
             <i class="quidditch icon"></i>
-            Game Comparisons - To Be Added
+            Year over Year Comparisons
         </h4>
 
-        {% comment %}
-        <div class="ui stackable three column center aligned grid">
-
-            <div class="column">
-                <div class="ui segment">
-                    <div class="ui statistic">
-                        <div class="value">
-                            {{ games_played_year }}
-                        </div>
-                        <div class="label">
-                            Game{{ games_played_year|pluralize }} This Year
-                        </div>
-                    </div>
-                </div>
+    <div class="ui xtrapadded stackable relaxed grid container">
+        <div class="row">
+            <div class="sixteen wide column">
+                <table class="ui large celled table">
+                    <thead>
+                        <tr>
+                            <th>Statistic</th>
+                            <th>This Year</th>
+                            <th>Last Year</th>
+                            <th>Last Year (to Date)</th>
+                            <th>+/-</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for name, wins in wins_last_year_dict.items %}
+                        <tr>
+                            <td>{{ name }}</td>
+                            <td>{{ wins.1 }}</td>
+                            <td>{{ wins.0 }}</td>
+                            <td>{{ wins.2 }}</td>
+                            <td class="{% if wins.3 < 0 %}negative{% elif wins.3 > 0 %}positive{% endif %}">{{ wins.3|floatformat:"0" }}%</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Total Games Played</th>
+                            <th>{{ games_played_this_year }}</th>
+                            <th>{{ games_played_last_year }}</th>
+                            <th>{{ games_played_last_year_to_date }}</th>
+                            <th class="{% if games_played_to_date_diff_per < 0 %}negative{% elif games_played_to_date_diff_per > 0 %}positive{% endif %}">{{ games_played_to_date_diff_per|floatformat:"0" }}%</th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
-            
-            <div class="column">
-                <div class="ui segment">
-                    <div class="ui statistic">
-                        <div class="value">
-                            {{ games_played_this_month }}
-                        </div>
-                        <div class="label">
-                            Game{{ games_played_this_month|pluralize }} This Month
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="column">
-                <div class="ui segment">
-                    <div class="ui statistic">
-                        <div class="value">
-                            {{ games_played_last_month }}
-                        </div>
-                        <div class="label">
-                            Game{{ games_played_last_month|pluralize }} Last Month
-                        </div>
-                    </div>
-                </div>
-            </div>
-        
         </div>
-        {% endcomment %}
+    </div>
 
     </div>
 </div>
